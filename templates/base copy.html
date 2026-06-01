@@ -1,0 +1,1359 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta
+      name="description"
+      content="Anwaar Galaxy Glow - Professional Graphics Design & Coding Fusion Services. AutoCAD, Python, Django, Adobe Creative Suite at agclicks4u.com"
+    />
+    <meta
+      name="keywords"
+      content="graphics design, coding, python, django, autocad, photoshop, web development, agclicks4u"
+    />
+    <meta name="author" content="Anwaar Galaxy Glow" />
+    <title>
+      {% block title %}Anwaar Galaxy Glow - Graphics & Coding Fusion |
+      agclicks4u.com{% endblock %}
+    </title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome 6 (CDN) -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Montserrat:wght@700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" />
+
+    {% block extra_css %}{% endblock %}
+
+    <style>
+              :root {
+                  --primary-color: #6c63ff;
+                  --secondary-color: #4a44c6;
+                  --accent-color: #ff6584;
+                  --dark-color: #2a2d43;
+                  --light-color: #f8f9fa;
+                  --gradient-primary: linear-gradient(135deg, #6c63ff 0%, #4a44c6 100%);
+                  --gradient-hero: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                  --gradient-hover: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+                  --box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+                  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+              }
+
+              * {
+                  margin: 0;
+                  padding: 0;
+                  box-sizing: border-box;
+              }
+
+              html {
+                  scroll-behavior: smooth;
+                  scroll-padding-top: 80px;
+              }
+
+              body {
+                  font-family: 'Poppins', sans-serif;
+                  color: #333;
+                  line-height: 1.6;
+                  min-height: 100vh;
+                  display: flex;
+                  flex-direction: column;
+                  overflow-x: hidden;
+              }
+
+              main {
+                  flex: 1;
+              }
+
+              h1, h2, h3, h4, h5, h6 {
+                  font-family: 'Montserrat', sans-serif;
+                  font-weight: 700;
+                  margin-bottom: 1rem;
+              }
+
+              /* Custom Scrollbar */
+              ::-webkit-scrollbar {
+                  width: 10px;
+              }
+
+              ::-webkit-scrollbar-track {
+                  background: #f1f1f1;
+              }
+
+              ::-webkit-scrollbar-thumb {
+                  background: var(--primary-color);
+                  border-radius: 5px;
+              }
+
+              ::-webkit-scrollbar-thumb:hover {
+                  background: var(--secondary-color);
+              }
+
+              /* ========== NAVBAR STYLES ========== */
+              .navbar {
+                  background: rgba(255, 255, 255, 0.98) !important;
+                  backdrop-filter: blur(10px);
+                  box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+                  padding: 12px 0;
+                  transition: var(--transition);
+              }
+
+              .navbar.scrolled {
+                  padding: 8px 0;
+                  background: white !important;
+                  box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+              }
+
+              /* Logo Container Styles */
+              .logo-container {
+                  display: flex;
+                  align-items: center;
+                  gap: 12px;
+                  text-decoration: none;
+              }
+
+              .logo-img {
+                  height: 50px;
+                  width: auto;
+                  transition: var(--transition);
+              }
+
+              .logo-img:hover {
+                  transform: scale(1.05) rotate(2deg);
+              }
+
+              .brand-text-container {
+                  display: flex;
+                  flex-direction: column;
+                  line-height: 1.2;
+              }
+
+              .brand-name {
+                  font-family: 'Montserrat', sans-serif;
+                  font-weight: 800;
+              }
+
+              .brand-name .main {
+                  font-size: clamp(0.9rem, 4vw, 1.2rem);
+                  background: var(--gradient-primary);
+                  -webkit-background-clip: text;
+                  background-clip: text;
+                  color: transparent;
+              }
+
+              .brand-name .sub {
+                  font-size: clamp(0.7rem, 3vw, 0.9rem);
+                  color: #666;
+                  font-weight: 600;
+              }
+
+              .brand-slogan {
+                  font-size: clamp(0.55rem, 2.5vw, 0.7rem);
+                  color: #888;
+                  letter-spacing: 0.5px;
+                  white-space: nowrap;
+              }
+
+              .brand-slogan i {
+                  font-size: 0.65rem;
+                  color: var(--primary-color);
+              }
+
+              .brand-domain {
+                  font-size: clamp(0.5rem, 2.5vw, 0.65rem);
+                  color: #999;
+                  font-family: monospace;
+                  white-space: nowrap;
+              }
+
+              .brand-domain i {
+                  font-size: 0.6rem;
+                  margin-right: 3px;
+              }
+
+              .navbar-brand {
+                  padding: 0;
+                  margin-right: 2rem;
+              }
+
+              .nav-link {
+                  position: relative;
+                  font-weight: 500;
+                  padding: 0.5rem 1rem;
+                  transition: var(--transition);
+                  color: #333 !important;
+              }
+
+              .nav-link:hover {
+                  color: var(--primary-color) !important;
+                  transform: translateY(-2px);
+              }
+
+              .nav-link::after {
+                  content: '';
+                  position: absolute;
+                  bottom: 0;
+                  left: 50%;
+                  width: 0;
+                  height: 2px;
+                  background: var(--gradient-primary);
+                  transition: var(--transition);
+                  transform: translateX(-50%);
+              }
+
+              .nav-link:hover::after {
+                  width: 80%;
+              }
+
+              .nav-link.active {
+                  color: var(--primary-color) !important;
+              }
+
+              .nav-link.active::after {
+                  width: 80%;
+              }
+
+              .btn-primary {
+                  background: var(--gradient-primary);
+                  border: none;
+                  padding: 10px 24px;
+                  font-weight: 600;
+                  transition: var(--transition);
+                  border-radius: 8px;
+                  position: relative;
+                  overflow: hidden;
+              }
+
+              .btn-primary::before {
+                  content: '';
+                  position: absolute;
+                  top: 0;
+                  left: -100%;
+                  width: 100%;
+                  height: 100%;
+                  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+                  transition: 0.5s;
+              }
+
+              .btn-primary:hover::before {
+                  left: 100%;
+              }
+
+              .btn-primary:hover {
+                  transform: translateY(-2px);
+                  box-shadow: 0 10px 20px rgba(108, 99, 255, 0.3);
+              }
+
+              /* ========== HERO SECTION STYLES ========== */
+              .hero-section {
+                  background: var(--gradient-hero);
+                  position: relative;
+                  {% comment %} padding: clamp(60px, 10vh, 100px) 0 0 0;  /* Remove bottom padding completely */ {% endcomment %}
+                  padding: clamp(60px, 6vh, 60px) 0 0 0;  /* Remove bottom padding completely */
+                  overflow: hidden;
+                  overflow: visible;
+                  {% comment %} min-height: 100vh;  /* Make hero take full viewport height */ {% endcomment %}
+                  min-height: auto;  /* Make hero take full viewport height */
+                  display: flex;
+                  align-items: center;  /* Center content vertically */
+              }
+
+              /* Animated dots pattern */
+              .hero-section::before {
+                  content: '';
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  right: 0;
+                  bottom: 0;
+                  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+                  opacity: 0.1;
+                  animation: floatBg 20s linear infinite;
+                  pointer-events: none;
+              }
+
+              @keyframes floatBg {
+                  0% { transform: translate(0, 0); }
+                  100% { transform: translate(50px, 50px); }
+              }
+
+              .hero-content {
+                  position: relative;
+                  z-index: 2;
+                  width: 100%;
+                  {% comment %} padding-bottom: clamp(80px, 15vh, 150px);  /* Add padding to content instead */ {% endcomment %}
+                  {% comment %} padding-bottom: 0 20px {% endcomment %}
+                  padding-bottom: 0;  /* ZERO padding */
+                  margin-bottom: 0;   /* ZERO margin */
+              }
+
+              .hero-container {
+                  max-width: min(900px, 90%);
+                  margin: 0 auto;
+                  padding: 0 20px;
+              }
+
+              .hero-badge {
+                  {% comment %} animation: fadeInDown 0.8s ease; {% endcomment %}
+                  margin-bottom: 0.5rem !important;  /* Reduced from 1rem */
+              }
+
+              .badge-glow {
+                  background: rgba(255,255,255,0.15);
+                  backdrop-filter: blur(10px);
+                  padding: 6px 20px;
+                  border-radius: 50px;
+                  font-size: clamp(0.7rem, 3vw, 0.85rem);
+                  font-weight: 600;
+                  display: inline-block;
+                  border: 1px solid rgba(255,255,255,0.3);
+                  box-shadow: 0 0 20px rgba(255,255,255,0.15);
+              }
+
+              .hero-main-title {
+                  font-size: clamp(2rem, 6vw, 3.5rem);
+                  font-weight: 900;
+                  {% comment %} margin: 15px 0; {% endcomment %}
+                  text-shadow: 3px 3px 6px rgba(0,0,0,0.2);
+                  margin: 10px 0 !important;  /* Tighter vertical spacing */
+                  line-height: 1.2 !important;  /* Tighter line height */
+              }
+
+              .title-line {
+                  display: inline-block;
+                  background: linear-gradient(135deg, #fff, #ffe6f0);
+                  -webkit-background-clip: text;
+                  background-clip: text;
+                  color: transparent;
+              }
+
+              .title-line:first-child {
+                  margin-right: 10px;
+              }
+
+              {% comment %} .fusion-container {
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  gap: clamp(8px, 2vw, 12px);
+                  flex-wrap: wrap;
+                  margin: 20px 0;
+              } {% endcomment %}
+              .fusion-container {
+                  margin: 10px 0 !important;  /* Reduced from 20px */
+                  gap: clamp(5px, 1.5vw, 10px);  /* Smaller gap */
+              }
+
+              .fusion-icon {
+                  font-size: clamp(1.2rem, 4vw, 1.8rem);
+                  color: #ffd700;
+                  animation: bounce 2s infinite;
+              }
+
+              @keyframes bounce {
+                  0%, 100% { transform: translateY(0); }
+                  50% { transform: translateY(-8px); }
+              }
+
+              {% comment %} .fusion-text {
+                  font-size: clamp(1rem, 4vw, 1.6rem);
+                  font-weight: 800;
+                  color: white;
+              } {% endcomment %}
+              .fusion-text {
+                  line-height: 1.2;  /* Tighter line height */
+              }
+
+              .blinking-text {
+                  animation: blinkSoft 1.2s infinite;
+              }
+
+              @keyframes blinkSoft {
+                  0%, 100% { opacity: 1; text-shadow: 0 0 5px rgba(255,255,255,0.5); }
+                  50% { opacity: 0.6; text-shadow: 0 0 20px rgba(255,255,255,0.8); }
+              }
+
+              .fusion-symbol {
+                  font-size: clamp(1rem, 3.5vw, 1.5rem);
+                  font-weight: bold;
+                  color: #ffd700;
+              }
+
+              .fusion-highlight {
+                  background: linear-gradient(135deg, #ffd700, #ff8c00);
+                  -webkit-background-clip: text;
+                  background-clip: text;
+                  color: transparent;
+                  font-size: clamp(1.2rem, 4.5vw, 1.8rem);
+              }
+
+              {% comment %} .hero-tagline {
+                  font-size: clamp(0.85rem, 3vw, 1rem);
+                  opacity: 0.95;
+                  margin-bottom: 25px;
+                  padding: 0 10px;
+              } {% endcomment %}
+              .hero-tagline {
+                  margin-bottom: 15px !important;  /* Reduced from 25px */
+                  line-height: 1.4;
+              }
+
+              {% comment %} .domain-box {
+                  display: inline-flex;
+                  align-items: center;
+                  gap: 10px;
+                  background: rgba(0,0,0,0.2);
+                  backdrop-filter: blur(5px);
+                  padding: 8px 20px;
+                  border-radius: 50px;
+                  font-size: clamp(0.75rem, 3vw, 0.9rem);
+                  margin: 15px 0;
+                  flex-wrap: wrap;
+                  justify-content: center;
+              } {% endcomment %}
+              .domain-box {
+                  margin: 10px 0 !important;  /* Reduced from 15px */
+                  padding: 5px 15px;  /* Reduced padding */
+              }
+
+
+              .domain-text {
+                  font-family: monospace;
+                  font-size: clamp(0.85rem, 3vw, 1rem);
+                  font-weight: 600;
+                  letter-spacing: 1px;
+              }
+
+              .domain-status {
+                  font-size: 0.75rem;
+                  background: rgba(255,255,255,0.2);
+                  padding: 2px 10px;
+                  border-radius: 20px;
+              }
+
+              {% comment %} .hero-buttons {
+                  display: flex;
+                  gap: clamp(15px, 3vw, 25px);
+                  justify-content: center;
+                  flex-wrap: wrap;
+                  margin-top: 20px;
+                  margin-top: 20px;
+                  position: relative;
+                  z-index: 3;  /* Ensure buttons are above wave */
+              } {% endcomment %}
+              {% comment %} .hero-buttons {
+                  margin-top: 15px !important;  /* Reduced from 20px */
+                  gap: 15px;
+              } {% endcomment %}
+              .hero-buttons {
+                  position: absolute;
+                  bottom: -30px;  /* Position buttons below the hero section */
+                  left: 0;
+                  right: 0;
+                  display: flex;
+                  gap: 20px;
+                  justify-content: center;
+                  z-index: 10;
+              }
+
+
+              .btn-hero-primary, .btn-hero-secondary {
+                  padding: 10px 24px;  /* Slightly smaller padding */
+              }
+
+              {% comment %} .btn-hero-primary, .btn-hero-secondary {
+                  padding: clamp(10px, 2vw, 12px) clamp(20px, 4vw, 30px);
+                  border-radius: 50px;
+                  font-weight: 700;
+                  text-decoration: none;
+                  transition: var(--transition);
+                  display: inline-flex;
+                  align-items: center;
+                  font-size: clamp(0.85rem, 2.5vw, 0.95rem);
+                  white-space: nowrap;
+              }
+               {% endcomment %}
+              {% comment %} .btn-hero-primary {
+                  background: white;
+                  color: #667eea;
+                  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+              } {% endcomment %}
+              /* Style buttons for white background visibility */
+              .btn-hero-primary {
+                  background: white;
+                  color: #667eea;
+                  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+                  padding: 12px 30px;
+                  border-radius: 50px;
+                  font-weight: 700;
+                  text-decoration: none;
+                  transition: var(--transition);
+                  display: inline-flex;
+                  align-items: center;
+                  gap: 10px;
+                  border: 2px solid transparent;
+              }
+
+
+              {% comment %} .btn-hero-primary:hover {
+                  transform: translateY(-3px);
+                  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+                  color: #764ba2;
+              } {% endcomment %}
+
+              .btn-hero-primary:hover {
+                 transform: translateY(-3px);
+                  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+                  background: #667eea;
+                  color: white;
+                  border-color: white;
+              }
+
+              {% comment %} .btn-hero-secondary {
+                  background: transparent;
+                  color: white;
+                  border: 2px solid white;
+              } {% endcomment %}
+              .btn-hero-secondary {
+                  background: rgba(255,255,255,0.95);
+                  color: #667eea;
+                  border: 2px solid #667eea;
+                  padding: 12px 30px;
+                  border-radius: 50px;
+                  font-weight: 700;
+                  text-decoration: none;
+                  transition: var(--transition);
+                  display: inline-flex;
+                  align-items: center;
+                  gap: 10px;
+                  backdrop-filter: blur(5px);
+              }
+
+              .btn-hero-secondary:hover {
+                  background: white;
+                  color: #667eea;
+                  transform: translateY(-3px);
+              }
+              .btn-hero-secondary:hover {
+                  transform: translateY(-3px);
+                  background: #667eea;
+                  color: white;
+                  border-color: white;
+              }
+
+              {% comment %} .hero-wave {
+                  position: absolute;
+                  bottom: 0;
+                  left: 0;
+                  width: 100%;
+                  z-index: 1;
+                  line-height: 0;
+              }
+
+              .hero-wave svg {
+                  width: 100%;
+                  height: auto;
+                  display: block;
+                  /* This makes wave taller */
+                  min-height: 60px;
+                  max-height: 100px;
+
+              } {% endcomment %}
+
+              .hero-wave {
+                  position: absolute;
+                  bottom: 0;
+                  left: 0;
+                  width: 100%;
+                  z-index: 1;
+                  line-height: 0;
+              }
+
+              .hero-wave svg {
+                  width: 100%;
+                   height: auto;
+                  display: block;
+                  min-height: 50px;  /* Smaller wave */
+                  max-height: 80px;
+              }
+              /* Add margin to main content to prevent overlap */
+      main {
+          margin-top: 30px;  /* Give space for floating buttons */
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+          .hero-buttons {
+              bottom: -25px;
+              gap: 15px;
+              flex-wrap: wrap;
+              padding: 0 20px;
+          }
+
+          .btn-hero-primary, .btn-hero-secondary {
+              padding: 10px 20px;
+              font-size: 14px;
+          }
+
+          main {
+              margin-top: 50px;  /* More space on mobile */
+          }
+
+
+              /* ========== FOOTER STYLES ========== */
+              footer {
+                  background: var(--dark-color) !important;
+                  margin-top: auto;
+              }
+
+              footer a {
+                  transition: var(--transition);
+                  text-decoration: none;
+                  display: inline-block;
+              }
+
+              footer a:hover {
+                  color: var(--primary-color) !important;
+                  transform: translateX(5px);
+              }
+
+              .social-links a {
+                  display: inline-flex;
+                  align-items: center;
+                  justify-content: center;
+                  width: 38px;
+                  height: 38px;
+                  background: rgba(255, 255, 255, 0.1);
+                  border-radius: 50%;
+                  transition: var(--transition);
+              }
+
+              .social-links a:hover {
+                  background: var(--primary-color);
+                  transform: translateY(-3px) rotate(360deg);
+              }
+
+              /* ========== RESPONSIVE STYLES ========== */
+              @media (max-width: 992px) {
+                  .navbar-collapse {
+                      background: white;
+                      padding: 20px;
+                      border-radius: 10px;
+                      margin-top: 10px;
+                      box-shadow: var(--box-shadow);
+                  }
+
+                  .nav-link::after {
+                      bottom: -2px;
+                  }
+              }
+
+              @media (max-width: 768px) {
+                  .logo-img {
+                      height: 40px;
+                  }
+
+                  .brand-slogan, .brand-domain {
+                      white-space: normal;
+                      line-height: 1.3;
+                  }
+
+                  .hero-buttons {
+                      flex-direction: column;
+                      align-items: center;
+                  }
+
+                  .btn-hero-primary, .btn-hero-secondary {
+                      width: 100%;
+                      justify-content: center;
+                      white-space: normal;
+                  }
+
+                  .domain-box {
+                      flex-direction: column;
+                      text-align: center;
+                      gap: 5px;
+                  }
+
+                  .fusion-container {
+                      gap: 5px;
+                  }
+              }
+
+              @media (max-width: 576px) {
+                  .logo-container {
+                      gap: 8px;
+                  }
+
+                  .brand-text-container {
+                      max-width: 180px;
+                  }
+
+                  .badge-glow {
+                      padding: 4px 12px;
+                  }
+
+                  .domain-status {
+                      font-size: 0.65rem;
+                  }
+              }
+
+              /* Touch device optimizations */
+              @media (hover: none) {
+                  .nav-link::after {
+                      display: none;
+                  }
+
+                  .btn-primary:hover, .btn-hero-primary:hover, .btn-hero-secondary:hover {
+                      transform: none;
+                  }
+              }
+
+              /* Print styles */
+              @media print {
+                  .navbar, .hero-wave, footer, .hero-buttons {
+                      display: none;
+                  }
+
+                  .hero-section {
+                      background: #667eea;
+                      padding: 20px 0;
+                  }
+              }
+
+              /* Loading animation */
+              .page-loader {
+                  position: fixed;
+                  top: 0;
+                  left: 0;
+                  width: 100%;
+                  height: 100%;
+                  background: white;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  z-index: 9999;
+                  transition: opacity 0.5s;
+              }
+
+              .loader {
+                  width: 50px;
+                  height: 50px;
+                  border: 3px solid #f3f3f3;
+                  border-top: 3px solid var(--primary-color);
+                  border-radius: 50%;
+                  animation: spin 1s linear infinite;
+              }
+
+              @keyframes spin {
+                  0% { transform: rotate(0deg); }
+                  100% { transform: rotate(360deg); }
+              }
+
+              /* ========== UTILITY CLASSES ========== */
+              .section-title {
+                  position: relative;
+                  padding-bottom: 15px;
+                  margin-bottom: 40px;
+              }
+
+              .section-title:after {
+                  content: '';
+                  position: absolute;
+                  bottom: 0;
+                  left: 0;
+                  width: 60px;
+                  height: 3px;
+                  background: var(--gradient-primary);
+                  transition: var(--transition);
+              }
+
+              .section-title:hover:after {
+                  width: 100px;
+              }
+
+              .service-card, .project-card {
+                  transition: var(--transition);
+                  border: none;
+                  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+                  border-radius: 10px;
+                  overflow: hidden;
+              }
+
+              .service-card:hover, .project-card:hover {
+                  transform: translateY(-10px);
+                  box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+              }
+
+              .project-card img {
+                  transition: var(--transition);
+                  height: 200px;
+                  object-fit: cover;
+              }
+
+              .project-card:hover img {
+                  transform: scale(1.05);
+              }
+
+              /* Fade-in animation for content */
+              .fade-in {
+                  animation: fadeInUp 0.8s ease;
+              }
+
+              @keyframes fadeInUp {
+                  from {
+                      opacity: 0;
+                      transform: translateY(30px);
+                  }
+                  to {
+                      opacity: 1;
+                      transform: translateY(0);
+                  }
+              }
+              /* Mobile fixes for buttons and wave */
+      @media (max-width: 768px) {
+          .hero-section {
+              min-height: auto;
+              padding-bottom: 0;
+          }
+
+          .hero-content {
+              padding-bottom: clamp(100px, 20vh, 180px);
+          }
+
+          .hero-buttons {
+              flex-direction: column;
+              align-items: center;
+              width: 100%;
+              max-width: 280px;
+              margin-left: auto;
+              margin-right: auto;
+          }
+
+          .btn-hero-primary, .btn-hero-secondary {
+              width: 100%;
+              justify-content: center;
+              white-space: normal;
+              text-align: center;
+          }
+
+          .hero-wave svg {
+              {% comment %} min-height: 80px; {% endcomment %}
+              min-height: 40px;  /* Change from 120px to 40px */
+              max-height: 60px;
+          }
+      }
+
+      /* For very tall screens */
+      @media (min-height: 800px) {
+          .hero-content {
+              padding-bottom: clamp(120px, 18vh, 200px);
+          }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Page Loader -->
+    <div class="page-loader" id="pageLoader">
+      <div class="loader"></div>
+    </div>
+
+    <!-- ========== NAVIGATION BAR ========== -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top" id="mainNav">
+      <div class="container">
+        <a class="navbar-brand" href="{% url 'home' %}">
+          <div class="logo-container">
+            <img
+              src="{% static 'images/mylogo_1.png' %}"
+              alt="Anwaar Galaxy Glow Logo"
+              class="logo-img"
+              loading="lazy"
+            />
+            <div class="brand-text-container">
+              <div class="brand-name">
+                <span class="main">Anwaar</span>
+                <span class="sub">Galaxy Glow</span>
+              </div>
+              <div class="brand-slogan">
+                <i class="fas fa-code"></i>
+                Graphics & Coding Fusion
+                <i class="fas fa-code"></i>
+              </div>
+              <div class="brand-domain">
+                <i class="fas fa-globe"></i> agclicks4u.com
+              </div>
+            </div>
+          </div>
+        </a>
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'home' %}">
+                <i class="fas fa-home me-1"></i> Home
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'services:service_list' %}">
+                <i class="fas fa-cogs me-1"></i> Services
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'projects:project_list' %}">
+                <i class="fas fa-briefcase me-1"></i> Projects
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'blog:blog_list' %}">
+                <i class="fas fa-blog me-1"></i> Blog
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="{% url 'testimonials:testimonial_list' %}"
+              >
+                <i class="fas fa-comment-dots me-1"></i> Testimonials
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'contact:contact' %}">
+                <i class="fas fa-envelope me-1"></i> Contact
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="btn btn-primary btn-sm ms-2"
+                href="{% url 'downloads:note_list' %}"
+              >
+                <i class="fas fa-download me-1"></i> Downloads
+              </a>
+            </li>
+            {% comment %} {% if user.is_superuser %}
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'admin:index' %}" target="_blank">
+        <i class="fas fa-shield-alt me-1 text-danger"></i> Admin Panel
+      </a>
+    </li>
+    {% endif %} {% endcomment %}
+    {% if user.is_authenticated %}
+  <li class="nav-item">
+    <a class="nav-link text-info" href="#">
+      <i class="fas fa-user me-1"></i> Logged in as: {{ user.username }} 
+      (Superuser: {{ user.is_superuser }})
+    </a>
+  </li>
+{% endif %}
+            {% comment %} <li class="nav-item">
+              <a
+                href="{% url 'contact:contact' %}"
+                class="btn btn-primary ms-lg-3 mt-3 mt-lg-0"
+              >
+                <i class="fas fa-paper-plane me-2"></i> Get Quote
+              </a>
+            </li> {% endcomment %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ========== HERO SECTION ========== -->
+    <!-- ========== HERO SECTION ========== -->
+    <div class="hero-section text-white">
+      <div class="hero-content">
+        <div class="hero-container">
+          <div class="text-center">
+            <!-- Welcome Badge -->
+            <div class="hero-badge mb-3 fade-in">
+              <span class="badge-glow">
+                <i class="fas fa-star-of-life me-2"></i>
+                Welcome to agclicks4u.com
+                <i class="fas fa-star-of-life ms-2"></i>
+              </span>
+            </div>
+
+            <!-- Main Title -->
+            <h1 class="hero-main-title fade-in">
+              <span class="title-line">Anwaar</span>
+              <span class="title-line">Galaxy Glow</span>
+            </h1>
+
+            <!-- Fusion Text with Blinking Effect -->
+            <div class="fusion-container fade-in">
+              <span class="fusion-icon">
+                <i class="fas fa-palette"></i>
+              </span>
+              <span class="fusion-text blinking-text">Graphics</span>
+              <span class="fusion-symbol">&</span>
+              <span
+                class="fusion-text blinking-text"
+                style="animation-delay: 0.3s"
+                >Coding</span
+              >
+              <span class="fusion-symbol">=</span>
+              <span
+                class="fusion-text fusion-highlight blinking-text"
+                style="animation-delay: 0.6s"
+                >Fusion</span
+              >
+              <span class="fusion-icon">
+                <i class="fas fa-code"></i>
+              </span>
+            </div>
+
+            <!-- Tagline -->
+            <p class="hero-tagline fade-in">
+              Where Design Meets Development | Creative Solutions for Modern
+              Business
+            </p>
+
+            <!-- Domain Display -->
+            <div class="domain-box fade-in">
+              <i class="fas fa-globe"></i>
+              <span class="domain-text">agclicks4u.com</span>
+              <span class="domain-status">
+                <i class="fas fa-check-circle"></i> Professional Hub
+              </span>
+            </div>
+
+            <!-- CTA Buttons - NOW ABOVE THE WAVE -->
+            <div class="hero-buttons fade-in">
+              <a
+                href="{% url 'services:service_list' %}"
+                class="btn-hero-primary"
+              >
+                <i class="fas fa-rocket me-2"></i> Explore Services
+              </a>
+              <a href="{% url 'contact:contact' %}" class="btn-hero-secondary">
+                <i class="fas fa-comment me-2"></i> Start Project
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Wave at bottom - now buttons are ABOVE it -->
+      <div class="hero-wave">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 1440 320"
+          preserveAspectRatio="none"
+        >
+          <path
+            fill="#ffffff"
+            fill-opacity="1"
+            d="M0,192L48,197.3C96,203,192,213,288,208C384,203,480,181,576,165.3C672,149,768,139,864,149.3C960,160,1056,192,1152,197.3C1248,203,1344,181,1392,170.7L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+          ></path>
+        </svg>
+      </div>
+    </div>
+
+    <!-- ========== MAIN CONTENT ========== -->
+    <main>
+      {% block content %}
+      <!-- Default content -->
+      <div class="container py-5">
+        <div class="text-center">
+          <h1>Welcome to Anwaar Galaxy Glow</h1>
+          <p class="lead">Professional Design & Development Services</p>
+        </div>
+      </div>
+      {% endblock %}
+    </main>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="bg-dark text-white pt-5 pb-4">
+      <div class="container">
+        <div class="row g-4">
+          <div class="col-lg-4 col-md-6">
+            <h4 class="mb-3">Anwaar Galaxy Glow</h4>
+            <p>
+              Professional design and development services specializing in
+              Graphics Design, Web Development, and Software Solutions.
+            </p>
+            <div class="social-links mt-4">
+              <a
+                href="https://web.facebook.com/profile.php?id=61587315391232"
+                class="text-white me-3"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a
+                href="https://x.com/agclicks4u"
+                class="text-white me-3"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i class="fab fa-twitter"></i>
+              </a>
+              <a
+                href="https://www.instagram.com/anwaar_galaxy_glow/"
+                class="text-white me-3"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i class="fab fa-instagram"></i>
+              </a>
+              <a
+                href="https://www.linkedin.com/in/muhammad-anwaar-a11312411/"
+                class="text-white me-3"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i class="fab fa-linkedin-in"></i>
+              </a>
+              <a
+                href="https://github.com/Anwaar0012"
+                class="text-white"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i class="fab fa-github"></i>
+              </a>
+              <a
+                href="https://www.youtube.com/@AnwaarGalaxy"
+                class="text-white mr-2"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i class="fab fa-youtube">_</i>
+              </a>
+            </div>
+          </div>
+
+          <div class="col-lg-2 col-md-6">
+            <h5 class="mb-3"><i class="fas fa-cogs me-2"></i> Services</h5>
+            <ul class="list-unstyled">
+              <li class="mb-2">
+                <a href="#!" class="text-light text-decoration-none">
+                  <i class="fas fa-pen-fancy me-2"></i> Illustrator</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="#!" class="text-light text-decoration-none">
+                  <i class="fas fa-cube me-2"></i> Blender</a
+                >
+              </li>
+              <li>
+                <a href="#!" class="text-light text-decoration-none">
+                  <i class="fas fa-camera me-2"></i> Photoshop</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="#!" class="text-light text-decoration-none">
+                  <i class="fas fa-cube me-2"></i> AutoCAD</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="#!" class="text-light text-decoration-none">
+                  <i class="fab fa-microsoft me-2"></i> MS Office</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="col-lg-2 col-md-6">
+            <h5 class="mb-3"><i class="fas fa-code me-2"></i> Development</h5>
+            <ul class="list-unstyled">
+              <li class="mb-2">
+                <a href="#!" class="text-light text-decoration-none"
+                  ><i class="fab fa-python me-2"></i> Python</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="#!" class="text-light text-decoration-none"
+                  ><i class="fas fa-code me-2"></i> Django</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="#!" class="text-light text-decoration-none"
+                  ><i class="fas fa-mobile-alt me-2"></i> Flet</a
+                >
+              </li>
+              <li>
+                <a href="#!" class="text-light text-decoration-none"
+                  ><i class="fas fa-desktop me-2"></i> PySide</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-lg-4 col-md-6">
+            <h5 class="mb-3">
+              <i class="fas fa-address-card me-2"></i> Contact Info
+            </h5>
+            <ul class="list-unstyled">
+              <li class="mb-3">
+                <i class="fas fa-envelope me-2 text-primary"></i>
+                <a href="mailto:anwaargalaxyglow@gmail.com" class="text-light"
+                  >anwaargalaxyglow@gmail.com</a
+                >
+              </li>
+              <li class="mb-3">
+                <i class="fas fa-phone me-2 text-primary"></i>
+                <a href="tel:+923012476595" class="text-light"
+                  >+92 301 2476595</a
+                >
+              </li>
+              <li class="mb-3">
+  <i class="fab fa-whatsapp me-2 text-success"></i>
+  <a href="https://wa.me/923012476595" class="text-light" target="_blank"
+    >+92 301 2476595</a
+  >
+</li>
+              <li class="mb-3">
+                <i class="fas fa-map-marker-alt me-2 text-primary"></i>
+                <span class="text-light">Pakistan</span>
+              </li>
+              <li>
+                <i class="fas fa-clock me-2 text-primary"></i>
+                <span class="text-light">Mon - Fri: 9:00 AM - 6:00 PM</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <hr class="bg-light my-4" />
+
+        <div class="row">
+          <div class="col-md-6 text-center text-md-start">
+            <p class="mb-0">
+              &copy; <span id="currentYear"></span> Anwaar Galaxy Glow. All
+              rights reserved. | agclicks4u.com
+            </p>
+          </div>
+          <div class="col-md-6 text-center text-md-end">
+            <a href="#!" class="text-light text-decoration-none me-3">
+              <i class="fas fa-shield-alt me-1"></i> Privacy
+            </a>
+            <a href="#!" class="text-light text-decoration-none">
+              <i class="fas fa-file-contract me-1"></i> Terms
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    {% block extra_js %}{% endblock %}
+
+    <script>
+      // Initialize AOS
+      AOS.init({
+        duration: 1000,
+        once: true,
+        offset: 100,
+      });
+
+      // Hide page loader
+      window.addEventListener("load", function () {
+        const loader = document.getElementById("pageLoader");
+        if (loader) {
+          setTimeout(() => {
+            loader.style.opacity = "0";
+            setTimeout(() => {
+              loader.style.display = "none";
+            }, 500);
+          }, 500);
+        }
+      });
+
+      // Set current year
+      document.getElementById("currentYear").textContent =
+        new Date().getFullYear();
+
+      // Navbar scroll effect
+      window.addEventListener("scroll", function () {
+        const navbar = document.getElementById("mainNav");
+        if (window.scrollY > 50) {
+          navbar.classList.add("scrolled");
+        } else {
+          navbar.classList.remove("scrolled");
+        }
+      });
+
+      // Active nav link
+      document.addEventListener("DOMContentLoaded", function () {
+        const currentPath = window.location.pathname;
+        const navLinks = document.querySelectorAll(".nav-link");
+
+        navLinks.forEach((link) => {
+          const href = link.getAttribute("href");
+          if (href && href !== "#" && currentPath === href) {
+            link.classList.add("active");
+          } else if (href === "/" && currentPath === "/") {
+            link.classList.add("active");
+          }
+        });
+      });
+
+      // Smooth scroll for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute("href"));
+          if (target) {
+            target.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+          }
+        });
+      });
+
+      // Add touch support for mobile
+      if ("ontouchstart" in window) {
+        document.body.classList.add("touch-device");
+      }
+
+      // Lazy load images
+      const images = document.querySelectorAll("img[data-src]");
+      const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            img.src = img.dataset.src;
+            img.removeAttribute("data-src");
+            imageObserver.unobserve(img);
+          }
+        });
+      });
+
+      images.forEach((img) => imageObserver.observe(img));
+    </script>
+  </body>
+</html>

@@ -1,0 +1,54 @@
+/* static/css/custom.css */
+:root {
+    --primary: #6c63ff;
+    --primary-dark: #4a44c6;
+    --secondary: #ff6584;
+    --dark: #2a2d43;
+    --light: #f8f9fa;
+    --gray: #6c757d;
+}
+
+.star-rating {
+    color: #ffc107;
+}
+
+.tech-item {
+    transition: transform 0.3s ease;
+}
+
+.tech-item:hover {
+    transform: translateY(-5px);
+}
+
+.service-icon {
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    font-size: 30px;
+}
+
+.bg-gradient {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+}
+
+.text-gradient {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.shadow-soft {
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.shadow-medium {
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.shadow-hard {
+    box-shadow: 0 15px 50px rgba(0,0,0,0.15);
+}

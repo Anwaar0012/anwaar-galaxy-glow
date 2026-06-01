@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Thank You - Testimonial Submitted{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 text-center">
+                <div class="card-body p-5">
+                    <div class="mb-4">
+                        <i class="fas fa-check-circle fa-5x text-success"></i>
+                    </div>
+                    
+                    <h1 class="display-5 fw-bold mb-3">Thank You!</h1>
+                    <h3 class="h4 text-muted mb-4">Your testimonial has been submitted successfully</h3>
+                    
+                    <p class="lead mb-4">
+                        We appreciate you taking the time to share your experience. 
+                        Your testimonial will be reviewed and published shortly.
+                    </p>
+                    
+                    <div class="alert alert-info">
+                        <i class="fas fa-clock me-2"></i>
+                        You'll receive a confirmation email once your testimonial is approved.
+                    </div>
+                    
+                    <hr class="my-4">
+                    
+                    <div class="d-grid gap-3 d-sm-flex justify-content-center">
+                        <a href="{% url 'testimonials:list' %}" class="btn btn-primary btn-lg px-4">
+                            <i class="fas fa-star me-2"></i> View All Testimonials
+                        </a>
+                        <a href="{% url 'home' %}" class="btn btn-outline-secondary btn-lg px-4">
+                            <i class="fas fa-home me-2"></i> Return Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Show recent testimonials -->
+            {% if recent_testimonials %}
+            <div class="mt-5">
+                <h4 class="text-center mb-4">Recent Testimonials</h4>
+                <div class="row">
+                    {% for testimonial in recent_testimonials %}
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body p-3">
+                                <div class="rating-stars mb-2">
+                                    {% for i in "12345" %}
+                                        {% if forloop.counter <= testimonial.rating %}
+                                            <i class="fas fa-star text-warning small"></i>
+                                        {% else %}
+                                            <i class="far fa-star text-warning small"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                                <p class="small mb-2">"{{ testimonial.testimonial|truncatechars:80 }}"</p>
+                                <strong class="small">{{ testimonial.client_name }}</strong>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+    .rating-stars i {
+        font-size: 0.9rem;
+    }
+</style>
+{% endblock %}

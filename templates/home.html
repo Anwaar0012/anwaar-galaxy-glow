@@ -1,0 +1,297 @@
+{% extends 'base.html' %}
+{% block title %}Home - Anwaar Galaxy Glow{% endblock%} 
+{% block content %}
+<!-- Hero Section -->
+<section
+  class="hero-section py-5"
+  style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)"
+>
+  <div class="container py-5">
+    <div class="row align-items-center">
+      <div class="col-lg-6">
+        <h1 class="display-4 fw-bold mb-4">
+          Transform Your Vision into Digital Excellence
+        </h1>
+        <p class="lead mb-4">
+          Professional services in AutoCAD, Adobe Creative Suite, MS Office, and
+          Python Development. Bringing your ideas to life with precision and
+          creativity.
+        </p>
+        <div class="d-flex flex-wrap gap-3">
+          <a href="#services" class="btn btn-primary btn-lg">
+            Explore Services <i class="fas fa-arrow-right ms-2"></i>
+          </a>
+          <a
+            href="{% url 'contact:contact' %}"
+            class="btn btn-outline-dark btn-lg"
+          >
+            Start Project <i class="fas fa-rocket ms-2"></i>
+          </a>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <img
+          src="https://via.placeholder.com/600x400"
+          alt="Hero Image"
+          class="img-fluid rounded shadow-lg"
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Services Preview -->
+<section id="services" class="py-5 bg-light">
+  <div class="container py-5">
+    <div class="row mb-5">
+      <div class="col-12">
+        <h2 class="section-title">
+          Our <span class="text-primary">Services</span>
+        </h2>
+        <p class="lead">
+          Comprehensive design and development solutions for all your needs
+        </p>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      {% for service in featured_services %}
+      <div class="col-lg-4 col-md-6">
+        <div class="service-card card h-100 border-0">
+          <div class="card-body p-4">
+            <div
+              class="icon-wrapper mb-3"
+              style="
+                width: 60px;
+                height: 60px;
+                background: var(--gradient-primary);
+                border-radius: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              "
+            >
+              <i class="{{ service.category.icon }} fa-2x text-white"></i>
+            </div>
+            <h4 class="card-title">{{ service.name }}</h4>
+            <p class="card-text">{{ service.short_description|safe }}</p>
+
+            <div class="d-flex justify-content-between align-items-center mt-4">
+              <span class="h5 text-primary mb-0">${{ service.price }}</span>
+              <a
+                href="{% url 'services:service_detail' service.slug %}"
+                class="btn btn-sm btn-outline-primary"
+              >
+                View Details <i class="fas fa-arrow-right ms-1"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="text-center mt-5">
+      <a href="{% url 'services:service_list' %}" class="btn btn-primary">
+        View All Services <i class="fas fa-list ms-2"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Projects -->
+<section class="py-5">
+  <div class="container py-5">
+    <div class="row mb-5">
+      <div class="col-12">
+        <h2 class="section-title">
+          Featured <span class="text-primary">Projects</span>
+        </h2>
+        <p class="lead">See how we've helped clients achieve their goals</p>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      {% for project in featured_projects %}
+      <div class="col-lg-3 col-md-6">
+        <div class="project-card card border-0 shadow-sm h-100">
+          <img
+            src="{{ project.featured_image.url }}"
+            class="card-img-top"
+            alt="{{ project.title }}"
+            style="height: 200px; object-fit: cover"
+          />
+          <div class="card-body">
+            <span class="badge bg-primary mb-2"
+              >{{ project.get_technologies_display }}</span
+            >
+            <h5 class="card-title">{{ project.title|truncatechars:50 }}</h5>
+            <p class="card-text small">
+              {{ project.description|striptags|truncatechars:80 }}
+            </p>
+            <a
+              href="{% url 'projects:project_detail' project.slug %}"
+              class="btn btn-sm btn-outline-primary"
+              >View Project</a
+            >
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Add this to your home.html after the services section -->
+<!-- Technologies Section -->
+<section class="py-5 bg-light">
+  <div class="container py-5">
+    <div class="row mb-5">
+      <div class="col-12 text-center">
+        <h2 class="section-title d-inline-block">
+          Technologies <span class="text-primary">We Use</span>
+        </h2>
+      </div>
+    </div>
+
+    <div class="row g-4 text-center">
+      <div class="col-lg-2 col-md-3 col-4">
+        <div class="tech-item p-3 bg-white rounded shadow-sm">
+          <i class="fab fa-python fa-3x text-primary mb-3"></i>
+          <h6>Python</h6>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-3 col-4">
+        <div class="tech-item p-3 bg-white rounded shadow-sm">
+          <i class="fas fa-pen-fancy fa-3x text-warning mb-3"></i>
+          <h6>Illustrator</h6>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-3 col-4">
+        <div class="tech-item p-3 bg-white rounded shadow-sm">
+          <i class="fas fa-cube fa-3x text-orange mb-3"></i>
+          <h6>Blender</h6>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-3 col-4">
+        <div class="tech-item p-3 bg-white rounded shadow-sm">
+          <i class="fas fa-camera fa-3x text-primary mb-3"></i>
+          <h6>Photoshop</h6>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-3 col-4">
+        <div class="tech-item p-3 bg-white rounded shadow-sm">
+          <i class="fab fa-microsoft fa-3x text-success mb-3"></i>
+          <h6>MS Office</h6>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-3 col-4">
+        <div class="tech-item p-3 bg-white rounded shadow-sm">
+          <i class="fas fa-cube fa-3x text-danger mb-3"></i>
+          <h6>AutoCAD</h6>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-3 col-4">
+        <div class="tech-item p-3 bg-white rounded shadow-sm">
+          <i class="fas fa-code fa-3x text-dark mb-3"></i>
+          <h6>PySide6</h6>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-3 col-4">
+        <div class="tech-item p-3 bg-white rounded shadow-sm">
+          <i class="fab fa-python fa-3x text-green mb-3"></i>
+          <h6>Django</h6>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-3 col-4">
+        <div class="tech-item p-3 bg-white rounded shadow-sm">
+          <i class="fas fa-mobile-alt fa-3x text-purple mb-3"></i>
+          <h6>Flet</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="py-5">
+  <div class="container py-5">
+    <div class="row mb-5">
+      <div class="col-12">
+        <h2 class="section-title">
+          Client <span class="text-primary">Testimonials</span>
+        </h2>
+        <p class="lead">What our clients say about our services</p>
+      </div>
+    </div>
+
+    <div class="row">
+  {% for testimonial in featured_testimonials %}
+  <div class="col-md-4 mb-4">
+    <div class="card border-0 shadow-sm h-100">
+      <div class="card-body p-4">
+        <div class="d-flex mb-3">
+          {% for i in "12345" %}
+            {% if forloop.counter <= testimonial.rating %}
+              <i class="fas fa-star text-warning me-1"></i>
+            {% else %}
+              <i class="far fa-star text-warning me-1"></i>
+            {% endif %}
+          {% endfor %}
+        </div>
+        <p class="card-text mb-4">
+          "{{ testimonial.testimonial|truncatechars:150 }}"
+        </p>
+            <div class="d-flex align-items-center">
+              {% if testimonial.client_image %}
+              <img
+                src="{{ testimonial.client_image.url }}"
+                alt="{{ testimonial.client_name }}"
+                class="rounded-circle me-3"
+                width="50"
+                height="50"
+              />
+              {% else %}
+              <div
+                class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-3"
+                style="width: 50px; height: 50px"
+              >
+                {{ testimonial.client_name|first|upper }}
+              </div>
+              {% endif %}
+              <div>
+                <h6 class="mb-0">{{ testimonial.client_name }}</h6>
+                {% if testimonial.client_role %}
+                <small class="text-muted"
+                  >{{ testimonial.client_role }}{% if testimonial.company %}, {{
+                  testimonial.company }}{% endif %}</small
+                >
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+<!-- CTA Section -->
+<section class="py-5 bg-primary text-white">
+  <div class="container py-5 text-center">
+    <h2 class="display-5 fw-bold mb-4">Ready to Start Your Project?</h2>
+    <p class="lead mb-5">
+      Let's discuss how we can bring your ideas to life with our professional
+      services.
+    </p>
+    <div class="d-flex flex-wrap justify-content-center gap-3">
+      <a href="{% url 'contact:contact' %}" class="btn btn-light btn-lg px-5">
+        Get Free Quote <i class="fas fa-paper-plane ms-2"></i>
+      </a>
+      <a href="tel:+923012476595" class="btn btn-outline-light btn-lg px-5">
+        <i class="fas fa-phone me-2"></i> Call Now
+      </a>
+    </div>
+  </div>
+</section>
+{% endblock %}

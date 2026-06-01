@@ -1,0 +1,214 @@
+<!-- templates/testimonials/testimonial_list.html -->
+{% extends 'base.html' %}
+
+{% block title %}Client Testimonials - Anwaar Galaxy Glow{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold mb-3">Client Testimonials</h1>
+        <p class="lead text-muted">See what our clients say about our services</p>
+    </div>
+    
+    <!-- Featured Testimonials -->
+    <div class="mb-5">
+        <h2 class="section-title text-center">Featured Reviews</h2>
+        <div class="row">
+            {% for testimonial in featured_testimonials %}
+            <div class="col-lg-6 mb-4">
+                <div class="card testimonial-card h-100 border-0 shadow-lg">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="rating-stars me-3">
+                                {% for i in "12345" %}
+                                    {% if forloop.counter <= testimonial.rating %}
+                                        <i class="fas fa-star text-warning"></i>
+                                    {% else %}
+                                        <i class="far fa-star text-warning"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            {% if testimonial.is_verified %}
+                            <span class="badge bg-success">
+                                <i class="fas fa-check-circle me-1"></i> Verified
+                            </span>
+                            {% endif %}
+                        </div>
+                        
+                        <blockquote class="mb-4">
+                            <i class="fas fa-quote-left fa-2x text-primary opacity-25 mb-3 d-block"></i>
+                            <p class="fs-5 fst-italic">"{{ testimonial.testimonial }}"</p>
+                        </blockquote>
+                        
+                        <div class="d-flex align-items-center">
+                            {% if testimonial.client_image %}
+                            <img src="{{ testimonial.client_image.url }}" alt="{{ testimonial.client_name }}" 
+                                 class="rounded-circle me-3" width="60" height="60" style="object-fit: cover;">
+                            {% else %}
+                            <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center me-3" 
+                                 style="width: 60px; height: 60px;">
+                                <span class="text-white fw-bold fs-4">{{ testimonial.client_name|first|upper }}</span>
+                            </div>
+                            {% endif %}
+                            <div>
+                                <h5 class="mb-0">{{ testimonial.client_name }}</h5>
+                                {% if testimonial.client_role or testimonial.company %}
+                                <p class="text-muted mb-0">
+                                    {% if testimonial.client_role %}{{ testimonial.client_role }}{% endif %}
+                                    {% if testimonial.company %}{% if testimonial.client_role %}, {% endif %}{{ testimonial.company }}{% endif %}
+                                </p>
+                                {% endif %}
+                                {% if testimonial.project %}
+                                <small class="text-primary">
+                                    <i class="fas fa-briefcase me-1"></i> {{ testimonial.project }}
+                                </small>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p class="text-muted">No featured testimonials yet.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <!-- All Testimonials -->
+    <div>
+        <h2 class="section-title text-center">All Testimonials</h2>
+        
+        {% if testimonials %}
+            <div class="row">
+                {% for testimonial in testimonials %}
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="rating-stars mb-3">
+                                {% for i in "12345" %}
+                                    {% if forloop.counter <= testimonial.rating %}
+                                        <i class="fas fa-star text-warning"></i>
+                                    {% else %}
+                                        <i class="far fa-star text-warning"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            
+                            <p class="card-text mb-4">"{{ testimonial.testimonial|truncatechars:150 }}"</p>
+                            
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    {% if testimonial.client_image %}
+                                    <img src="{{ testimonial.client_image.url }}" alt="{{ testimonial.client_name }}" 
+                                         class="rounded-circle" width="50" height="50" style="object-fit: cover;">
+                                    {% else %}
+                                    <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center" 
+                                         style="width: 50px; height: 50px;">
+                                        <span class="text-white fw-bold">{{ testimonial.client_name|first|upper }}</span>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h6 class="mb-0">{{ testimonial.client_name }}</h6>
+                                    {% if testimonial.client_role %}
+                                    <small class="text-muted">{{ testimonial.client_role }}</small>
+                                    {% endif %}
+                                </div>
+                                {% if testimonial.is_verified %}
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-check-circle text-success" title="Verified"></i>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent border-top-0 py-3">
+                            <small class="text-muted">
+                                <i class="far fa-calendar me-1"></i> {{ testimonial.created_at|date:"M d, Y" }}
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <!-- Pagination -->
+            {% if is_paginated %}
+            <nav aria-label="Testimonials pagination" class="mt-5">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                        <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                        <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+        {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-comments fa-4x text-muted mb-4"></i>
+                <h3>No testimonials yet</h3>
+                <p class="text-muted mb-4">Be the first to share your experience with our services!</p>
+                <a href="{% url 'contact:contact' %}" class="btn btn-primary">
+                    <i class="fas fa-plus me-2"></i> Add Your Testimonial
+                </a>
+            </div>
+        {% endif %}
+    </div>
+    
+    <!-- Call to Action -->
+    <div class="text-center mt-5 pt-5">
+        <div class="card bg-primary text-white border-0">
+            <div class="card-body p-5">
+                <h2 class="card-title mb-3">Share Your Experience</h2>
+                <p class="card-text mb-4">Have you worked with us? We'd love to hear about your experience!</p>
+                <a href="{% url 'contact:contact' %}" class="btn btn-light btn-lg">
+                    <i class="fas fa-edit me-2"></i> Submit Your Testimonial
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .testimonial-card {
+        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+        border-left: 5px solid var(--primary-color) !important;
+    }
+    
+    .rating-stars {
+        font-size: 1.2rem;
+    }
+    
+    blockquote {
+        position: relative;
+    }
+    
+    blockquote i.fa-quote-left {
+        position: absolute;
+        top: -10px;
+        left: -10px;
+    }
+</style>
+{% endblock %}

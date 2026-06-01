@@ -1,0 +1,343 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load project_filters %}
+
+{% block title %}Our Projects Portfolio - Anwaar Galaxy Glow{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Page Header -->
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold mb-3">Our Portfolio</h1>
+        <p class="lead text-muted">Explore our successful projects showcasing expertise in design and development</p>
+    </div>
+
+    <!-- Filter Options -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-6 mb-3 mb-md-0">
+                            <h5 class="mb-0">Filter by Technology</h5>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex flex-wrap gap-2">
+                                <a href="?technology=all" class="btn btn-sm btn-outline-primary {% if not request.GET.technology or request.GET.technology == 'all' %}active{% endif %}">
+                                    All
+                                </a>
+                                {% for tech_code, tech_data in technologies.items %}
+                                <a href="?technology={{ tech_code }}" class="btn btn-sm btn-outline-primary {% if request.GET.technology == tech_code %}active{% endif %}">
+                                    {{ tech_data.name }} ({{ tech_data.count }})
+                                </a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Projects Grid -->
+    {% if projects %}
+    <div class="row g-4">
+        {% for project in projects %}
+        <div class="col-lg-4 col-md-6">
+            <div class="project-card card h-100 border-0 shadow-sm overflow-hidden">
+                <!-- Project Image -->
+                <div class="project-image-wrapper position-relative">
+                    {% if project.featured_image %}
+                    <img src="{{ project.featured_image.url }}" 
+                         class="card-img-top project-image" 
+                         alt="{{ project.title }}"
+                         style="height: 250px; object-fit: cover;">
+                    {% else %}
+                    <div class="project-image-default" style="height: 250px; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));">
+                        <div class="d-flex flex-column align-items-center justify-content-center h-100 text-white">
+                            <i class="fas fa-project-diagram fa-3x mb-3 opacity-75"></i>
+                            <h5 class="mb-0">{{ project.title|truncatechars:20 }}</h5>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Technology Badge -->
+                    <div class="position-absolute top-0 end-0 m-3">
+                        <span class="badge bg-primary px-3 py-2">
+                            <i class="fas fa-{{ project.technologies|lower }} me-1"></i>
+                            {{ project.get_technologies_display }}
+                        </span>
+                    </div>
+                    
+                    <!-- Featured Badge -->
+                    {% if project.is_featured %}
+                    <div class="position-absolute top-0 start-0 m-3">
+                        <span class="badge bg-danger px-3 py-2">
+                            <i class="fas fa-star me-1"></i> Featured
+                        </span>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="card-body p-4">
+                    <!-- Project Category -->
+                    {% if project.category %}
+                    <div class="mb-2">
+                        <span class="badge bg-secondary">
+                            <i class="fas fa-folder me-1"></i> {{ project.category.name }}
+                        </span>
+                    </div>
+                    {% endif %}
+
+                    <!-- Project Title -->
+                    <h5 class="card-title mb-2">{{ project.title }}</h5>
+                    
+                    <!-- Project Excerpt (safe filter for HTML) -->
+                    <div class="card-text project-excerpt mb-3">
+                        {{ project.description|striptags|truncatechars:120|safe }}
+                    </div>
+
+                    <!-- Project Meta -->
+                    <div class="project-meta d-flex flex-wrap gap-3 mb-3">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-calendar-alt text-primary me-2"></i>
+                            <small class="text-muted">{{ project.completion_date|date:"M Y" }}</small>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-clock text-primary me-2"></i>
+                            <small class="text-muted">{{ project.duration }}</small>
+                        </div>
+                    </div>
+
+                    <!-- Additional Technologies -->
+                    {% if project.other_technologies %}
+                    <div class="mb-3">
+                        <small class="text-muted">Also used:</small>
+                        <div class="d-flex flex-wrap gap-1 mt-1">
+                            {% for tech in project.other_technologies|split:"," %}
+                            <span class="badge bg-light text-dark border">{{ tech.strip }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Action Buttons -->
+                    <div class="d-flex justify-content-between align-items-center mt-4 pt-3 border-top">
+                        <div>
+                            {% if project.client %}
+                            <small class="text-muted">
+                                <i class="fas fa-user-tie me-1"></i> {{ project.client|truncatechars:15 }}
+                            </small>
+                            {% endif %}
+                        </div>
+                        <div class="d-flex gap-2">
+                            <a href="{% url 'projects:project_detail' project.slug %}" class="btn btn-primary btn-sm">
+                                <i class="fas fa-eye me-1"></i> View Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if is_paginated %}
+    <nav aria-label="Page navigation" class="mt-5">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.technology %}&technology={{ request.GET.technology }}{% endif %}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            {% endif %}
+            
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ num }}{% if request.GET.technology %}&technology={{ request.GET.technology }}{% endif %}">{{ num }}</a>
+                </li>
+                {% endif %}
+            {% endfor %}
+            
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.technology %}&technology={{ request.GET.technology }}{% endif %}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+
+    {% else %}
+    <!-- Empty State -->
+    <div class="text-center py-5">
+        <div class="card border-0 shadow-sm py-5">
+            <i class="fas fa-project-diagram fa-4x text-muted mb-4"></i>
+            <h3 class="mb-3">No Projects Available</h3>
+            <p class="text-muted mb-4">We're currently working on amazing projects. Check back soon!</p>
+            <a href="{% url 'services:service_list' %}" class="btn btn-primary">
+                <i class="fas fa-cogs me-2"></i> Explore Our Services
+            </a>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Call to Action -->
+    <div class="cta-section mt-5 pt-5">
+        <div class="card bg-dark text-white border-0 overflow-hidden">
+            <div class="card-body p-5">
+                <div class="row align-items-center">
+                    <div class="col-lg-8">
+                        <h2 class="card-title mb-3">Ready to Start Your Project?</h2>
+                        <p class="card-text mb-4">Let's create something amazing together. Share your vision with us.</p>
+                        <div class="d-flex flex-wrap gap-3">
+                            <a href="{% url 'contact:contact' %}" class="btn btn-light btn-lg">
+                                <i class="fas fa-rocket me-2"></i> Start a Project
+                            </a>
+                            <a href="{% url 'services:service_list' %}" class="btn btn-outline-light btn-lg">
+                                <i class="fas fa-cogs me-2"></i> Our Services
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 text-center">
+                        <i class="fas fa-lightbulb fa-6x opacity-25"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .project-card {
+        transition: all 0.3s ease;
+        border-radius: 15px;
+        overflow: hidden;
+    }
+    
+    .project-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.15) !important;
+    }
+    
+    .project-image-wrapper {
+        overflow: hidden;
+        border-radius: 15px 15px 0 0;
+    }
+    
+    .project-image {
+        transition: transform 0.5s ease;
+    }
+    
+    .project-card:hover .project-image {
+        transform: scale(1.05);
+    }
+    
+    .project-image-default {
+        border-radius: 15px 15px 0 0;
+    }
+    
+    .project-excerpt {
+        color: #666;
+        line-height: 1.6;
+        min-height: 48px;
+    }
+    
+    .project-meta {
+        background: rgba(108, 99, 255, 0.05);
+        padding: 10px;
+        border-radius: 8px;
+        border-left: 3px solid var(--primary-color);
+    }
+    
+    .cta-section {
+        position: relative;
+    }
+    
+    .cta-section::before {
+        content: '';
+        position: absolute;
+        top: -50px;
+        left: 0;
+        right: 0;
+        height: 100px;
+        background: linear-gradient(to bottom, transparent, var(--light-color));
+        z-index: -1;
+    }
+    
+    /* Animation for project cards */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .project-card {
+        animation: fadeInUp 0.6s ease-out;
+        animation-fill-mode: both;
+    }
+    
+    /* Stagger the animation */
+    .project-card:nth-child(1) { animation-delay: 0.1s; }
+    .project-card:nth-child(2) { animation-delay: 0.2s; }
+    .project-card:nth-child(3) { animation-delay: 0.3s; }
+    .project-card:nth-child(4) { animation-delay: 0.4s; }
+    .project-card:nth-child(5) { animation-delay: 0.5s; }
+    .project-card:nth-child(6) { animation-delay: 0.6s; }
+    
+    /* Active filter button */
+    .btn-outline-primary.active {
+        background: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add hover effect to project cards
+        const projectCards = document.querySelectorAll('.project-card');
+        
+        projectCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.zIndex = '10';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.zIndex = '1';
+            });
+        });
+        
+        // Make entire card clickable on mobile
+        if (window.innerWidth < 768) {
+            projectCards.forEach(card => {
+                card.style.cursor = 'pointer';
+                card.addEventListener('click', function(e) {
+                    if (!e.target.closest('a') && !e.target.closest('button')) {
+                        const link = this.querySelector('a[href*="project_detail"]');
+                        if (link) {
+                            link.click();
+                        }
+                    }
+                });
+            });
+        }
+    });
+</script>
+{% endblock %}

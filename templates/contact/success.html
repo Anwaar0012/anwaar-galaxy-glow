@@ -1,0 +1,80 @@
+<!-- templates/contact/success.html -->
+{% extends 'base.html' %}
+
+{% block title %}Message Sent - Anwaar Galaxy Glow{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 text-center">
+            <div class="card border-0 shadow-lg">
+                <div class="card-body p-5">
+                    <div class="mb-4">
+                        <div class="bg-success rounded-circle d-inline-flex align-items-center justify-content-center p-4 mb-3">
+                            <i class="fas fa-check fa-3x text-white"></i>
+                        </div>
+                        <h1 class="display-5 fw-bold text-success mb-3">Message Sent Successfully!</h1>
+                        <p class="lead mb-4">Thank you for reaching out to us. We've received your message and will get back to you within 24 hours.</p>
+                        
+                        <div class="alert alert-info mb-4">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>What happens next?</strong>
+                            <ul class="mt-2 mb-0">
+                                <li>You'll receive a confirmation email shortly</li>
+                                <li>Our team will review your request</li>
+                                <li>We'll contact you to discuss your project in detail</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="d-grid gap-3 d-md-flex justify-content-center mt-4">
+                            <a href="{% url 'home' %}" class="btn btn-primary btn-lg px-5">
+                                <i class="fas fa-home me-2"></i> Back to Home
+                            </a>
+                            <a href="{% url 'contact:contact' %}" class="btn btn-outline-primary btn-lg px-5">
+                                <i class="fas fa-envelope me-2"></i> Send Another Message
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <hr class="my-5">
+                    
+                    <div class="text-start">
+                        <h4 class="mb-3">In the meantime, you can:</h4>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="card border-0 bg-light h-100">
+                                    <div class="card-body">
+                                        <h5><i class="fas fa-book text-primary me-2"></i> Browse Our Services</h5>
+                                        <p class="small mb-0">Explore our complete range of design and development services.</p>
+                                        <a href="{% url 'services:service_list' %}" class="btn btn-sm btn-outline-primary mt-2">View Services</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="card border-0 bg-light h-100">
+                                    <div class="card-body">
+                                        <h5><i class="fas fa-briefcase text-primary me-2"></i> Check Our Portfolio</h5>
+                                        <p class="small mb-0">See examples of our previous work and client projects.</p>
+                                        <a href="{% url 'projects:project_list' %}" class="btn btn-sm btn-outline-primary mt-2">View Projects</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-5">
+                        <p class="text-muted small mb-0">
+                            <i class="fas fa-clock me-1"></i>
+                            Our response time is typically within 24 hours during business days.
+                        </p>
+                        <p class="text-muted small">
+                            <i class="fas fa-phone me-1"></i>
+                            For urgent inquiries, call us at +92 300 1234567
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,494 @@
+<!-- templates/services/category_detail.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ category.name }} - Services - Anwaar Galaxy Glow{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Category Hero Section */
+    .category-hero {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 15px;
+        padding: 3rem 2rem;
+        margin-bottom: 3rem;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .category-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        opacity: 0.1;
+        animation: floatBg 20s linear infinite;
+    }
+    
+    @keyframes floatBg {
+        0% { transform: translate(0, 0); }
+        100% { transform: translate(50px, 50px); }
+    }
+    
+    .category-hero-content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        color: white;
+    }
+    
+    .category-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        display: inline-block;
+        animation: bounce 2s infinite;
+    }
+    
+    @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+    
+    .category-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    }
+    
+    .category-description {
+        font-size: 1.1rem;
+        opacity: 0.95;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    /* Service Cards */
+    .service-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        height: 100%;
+        position: relative;
+    }
+    
+    .service-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+    }
+    
+    .service-card-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 2rem;
+        text-align: center;
+        color: white;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .service-card-header i {
+        font-size: 3rem;
+        transition: transform 0.3s ease;
+    }
+    
+    .service-card:hover .service-card-header i {
+        transform: scale(1.1) rotate(5deg);
+    }
+    
+    .service-card-body {
+        padding: 1.5rem;
+    }
+    
+    .service-title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: #2a2d43;
+    }
+    
+    .service-description {
+        color: #6c757d;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+    }
+    
+    .service-price {
+        display: inline-block;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 0.3rem 1rem;
+        border-radius: 20px;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+    
+    .service-features {
+        list-style: none;
+        padding: 0;
+        margin: 1rem 0;
+    }
+    
+    .service-features li {
+        padding: 0.3rem 0;
+        color: #6c757d;
+        font-size: 0.9rem;
+    }
+    
+    .service-features li i {
+        color: #28a745;
+        margin-right: 0.5rem;
+        font-size: 0.8rem;
+    }
+    
+    .btn-service {
+        display: inline-block;
+        padding: 0.6rem 1.5rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 25px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: none;
+        width: 100%;
+        text-align: center;
+    }
+    
+    .btn-service:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        color: white;
+    }
+    
+    /* Stats Section */
+    .stats-section {
+        background: #f8f9fa;
+        border-radius: 15px;
+        padding: 3rem 2rem;
+        margin: 3rem 0;
+    }
+    
+    .stat-item {
+        text-align: center;
+    }
+    
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: #667eea;
+        margin-bottom: 0.5rem;
+    }
+    
+    .stat-label {
+        color: #6c757d;
+        font-size: 0.9rem;
+    }
+    
+    /* Related Categories */
+    .related-categories {
+        margin-top: 3rem;
+    }
+    
+    .category-tag {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        background: #f8f9fa;
+        color: #667eea;
+        border-radius: 25px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        margin: 0.3rem;
+    }
+    
+    .category-tag:hover {
+        background: #667eea;
+        color: white;
+        transform: translateY(-2px);
+    }
+    
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        background: #f8f9fa;
+        border-radius: 15px;
+    }
+    
+    .empty-state i {
+        font-size: 4rem;
+        color: #dee2e6;
+        margin-bottom: 1rem;
+    }
+    
+    /* Breadcrumb */
+    .breadcrumb {
+        background: transparent;
+        padding: 0;
+        margin-bottom: 2rem;
+    }
+    
+    .breadcrumb-item a {
+        text-decoration: none;
+        color: #667eea;
+        transition: color 0.3s ease;
+    }
+    
+    .breadcrumb-item a:hover {
+        color: #764ba2;
+        text-decoration: underline;
+    }
+    
+    .breadcrumb-item.active {
+        color: #6c757d;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .category-title {
+            font-size: 1.8rem;
+        }
+        
+        .category-icon {
+            font-size: 3rem;
+        }
+        
+        .stat-number {
+            font-size: 1.8rem;
+        }
+        
+        .service-card-header i {
+            font-size: 2rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Breadcrumb Navigation -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{% url 'home' %}">
+                    <i class="fas fa-home me-1"></i>Home
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'services:service_list' %}">
+                    <i class="fas fa-cogs me-1"></i>Services
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+                {{ category.name }}
+            </li>
+        </ol>
+    </nav>
+
+    <!-- Category Hero Section -->
+    <div class="category-hero">
+        <div class="category-hero-content">
+            {% if category.icon %}
+                <i class="{{ category.icon }} category-icon"></i>
+            {% else %}
+                <i class="fas fa-tag category-icon"></i>
+            {% endif %}
+            <h1 class="category-title">{{ category.name }}</h1>
+            {% if category.description %}
+                <p class="category-description">{{ category.description }}</p>
+            {% else %}
+                <p class="category-description">Explore our comprehensive range of {{ category.name }} services designed to meet your business needs.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Services Grid -->
+    {% if services %}
+        <div class="row g-4">
+            {% for service in services %}
+            <div class="col-md-6 col-lg-4">
+                <div class="service-card">
+                    <div class="service-card-header">
+                        {% if service.icon %}
+                            <i class="{{ service.icon }}"></i>
+                        {% else %}
+                            <i class="fas fa-cogs"></i>
+                        {% endif %}
+                    </div>
+                    <div class="service-card-body">
+                        <h3 class="service-title">{{ service.name }}</h3>
+                        <p class="service-description">
+                            {{ service.description|truncatewords:25 }}
+                        </p>
+                        
+                        {% if service.price %}
+                            <div class="service-price">
+                                <i class="fas fa-tag me-1"></i>
+                                ${{ service.price }} 
+                                {% if service.price_type %}/{{ service.price_type }}{% endif %}
+                            </div>
+                        {% endif %}
+                        
+                        <!-- Service Features (you can add this to your model) -->
+                        {% if service.features %}
+                        <ul class="service-features">
+                            {% for feature in service.features_list|slice:":3" %}
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                {{ feature }}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                        
+                        <a href="{% url 'services:service_detail' service.slug %}" class="btn-service">
+                            Learn More <i class="fas fa-arrow-right ms-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <!-- Empty State -->
+        <div class="empty-state">
+            <i class="fas fa-tools"></i>
+            <h3>Coming Soon!</h3>
+            <p class="text-muted">We're currently adding services in this category.</p>
+            <p class="text-muted">Please check back later or contact us for custom requirements.</p>
+            <a href="{% url 'contact:contact' %}" class="btn btn-primary mt-3">
+                <i class="fas fa-envelope me-2"></i>Contact Us
+            </a>
+        </div>
+    {% endif %}
+
+    <!-- Statistics Section (Dynamic based on services) -->
+    {% if services %}
+    <div class="stats-section">
+        <div class="row">
+            <div class="col-md-4 stat-item">
+                <div class="stat-number">{{ services|length }}</div>
+                <div class="stat-label">
+                    <i class="fas fa-cogs me-1"></i>Services Available
+                </div>
+            </div>
+            <div class="col-md-4 stat-item">
+                <div class="stat-number">{{ category.service_count|default:services|length }}</div>
+                <div class="stat-label">
+                    <i class="fas fa-users me-1"></i>Happy Clients
+                </div>
+            </div>
+            <div class="col-md-4 stat-item">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">
+                    <i class="fas fa-clock me-1"></i>Support Available
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Call to Action -->
+    <div class="text-center mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="p-4 bg-light rounded">
+                    <h3 class="mb-3">Need a Custom Solution?</h3>
+                    <p class="text-muted mb-4">
+                        Can't find what you're looking for? We offer custom development 
+                        and design services tailored to your specific needs.
+                    </p>
+                    <div class="d-flex justify-content-center gap-3 flex-wrap">
+                        <a href="{% url 'contact:contact' %}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-comment me-2"></i>Get a Quote
+                        </a>
+                        <a href="{% url 'services:service_list' %}" class="btn btn-outline-primary btn-lg">
+                            <i class="fas fa-arrow-left me-2"></i>Browse All Services
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Categories -->
+    {% if related_categories %}
+    <div class="related-categories">
+        <h4 class="text-center mb-4">
+            <i class="fas fa-tags me-2"></i>Explore Other Categories
+        </h4>
+        <div class="text-center">
+            {% for cat in related_categories %}
+            <a href="{% url 'services:category_detail' cat.slug %}" class="category-tag">
+                <i class="fas fa-folder me-1"></i>
+                {{ cat.name }}
+                <span class="badge bg-primary ms-1">{{ cat.services.count }}</span>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Add animation on scroll
+    document.addEventListener('DOMContentLoaded', function() {
+        // Animate stats when they come into view
+        const statsSection = document.querySelector('.stats-section');
+        if (statsSection) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const statNumbers = document.querySelectorAll('.stat-number');
+                        statNumbers.forEach(stat => {
+                            const finalNumber = parseInt(stat.innerText);
+                            if (!isNaN(finalNumber)) {
+                                let current = 0;
+                                const increment = finalNumber / 50;
+                                const timer = setInterval(() => {
+                                    current += increment;
+                                    if (current >= finalNumber) {
+                                        stat.innerText = finalNumber;
+                                        clearInterval(timer);
+                                    } else {
+                                        stat.innerText = Math.floor(current);
+                                    }
+                                }, 20);
+                            }
+                        });
+                        observer.unobserve(entry.target);
+                    }
+                });
+            });
+            observer.observe(statsSection);
+        }
+        
+        // Add fade-in animation for service cards
+        const cards = document.querySelectorAll('.service-card');
+        cards.forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'all 0.5s ease';
+            
+            setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, index * 100);
+        });
+    });
+    
+    // Track category view for analytics
+    if (typeof gtag !== 'undefined') {
+        gtag('event', 'view_category', {
+            'event_category': 'Services',
+            'event_label': '{{ category.name }}',
+            'value': {{ services|length }}
+        });
+    }
+</script>
+{% endblock %}

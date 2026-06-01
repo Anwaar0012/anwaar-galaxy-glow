@@ -1,0 +1,242 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Submit Your Testimonial - Anwaar Galaxy Glow{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Progress Steps -->
+            <div class="text-center mb-5">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="step active">
+                        <div class="step-number">1</div>
+                        <div class="step-label">Write Review</div>
+                    </div>
+                    <div class="step-line flex-grow-1"></div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-label">Add Details</div>
+                    </div>
+                    <div class="step-line flex-grow-1"></div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-label">Submit</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main Form Card -->
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-gradient-primary text-white text-center py-4">
+                    <h2 class="mb-0">Share Your Experience</h2>
+                    <p class="mb-0 mt-2 opacity-75">Help others by sharing your honest feedback</p>
+                </div>
+                
+                <div class="card-body p-5">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    
+                    <form method="post" enctype="multipart/form-data" novalidate>
+                        {% csrf_token %}
+                        
+                        <!-- Rating Section -->
+                        <div class="mb-4 text-center">
+                            <label class="form-label fw-bold">How would you rate your experience? *</label>
+                            <div class="rating-input">
+                                {{ form.rating }}
+                            </div>
+                            {% if form.rating.errors %}
+                                <div class="text-danger small mt-1">{{ form.rating.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Testimonial Section -->
+                        <div class="mb-4">
+                            <label for="{{ form.testimonial.id_for_label }}" class="form-label fw-bold">
+                                Your Testimonial *
+                            </label>
+                            {{ form.testimonial }}
+                            <div class="form-text">Minimum 20 characters. Be specific about your experience.</div>
+                            {% if form.testimonial.errors %}
+                                <div class="text-danger small mt-1">{{ form.testimonial.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <hr class="my-4">
+                        
+                        <h5 class="mb-3">About You</h5>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.client_name.id_for_label }}" class="form-label">Full Name *</label>
+                                {{ form.client_name }}
+                                {% if form.client_name.errors %}
+                                    <div class="text-danger small">{{ form.client_name.errors }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.client_email.id_for_label }}" class="form-label">Email Address *</label>
+                                {{ form.client_email }}
+                                <div class="form-text">We'll never share your email</div>
+                                {% if form.client_email.errors %}
+                                    <div class="text-danger small">{{ form.client_email.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.client_role.id_for_label }}" class="form-label">Job Title</label>
+                                {{ form.client_role }}
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.company.id_for_label }}" class="form-label">Company Name</label>
+                                {{ form.company }}
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.location.id_for_label }}" class="form-label">Location</label>
+                                {{ form.location }}
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.project.id_for_label }}" class="form-label">Project Name</label>
+                                {{ form.project }}
+                                <div class="form-text">What project did we work on together?</div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="{{ form.client_image.id_for_label }}" class="form-label">Your Photo (Optional)</label>
+                            {{ form.client_image }}
+                            <div class="form-text">Upload a professional photo (JPEG or PNG, max 2MB)</div>
+                            {% if form.client_image.errors %}
+                                <div class="text-danger small mt-1">{{ form.client_image.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Trust Badges -->
+                        <div class="alert alert-light border mt-4">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-shield-alt fa-2x text-primary me-3"></i>
+                                <div>
+                                    <strong>Your privacy matters</strong><br>
+                                    <small>We'll review your testimonial before publishing. Your email will never be shared publicly.</small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-paper-plane me-2"></i> Submit Testimonial
+                            </button>
+                            <a href="{% url 'testimonials:list' %}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-2"></i> Back to Testimonials
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Benefits Section -->
+            <div class="row mt-5 g-4">
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <i class="fas fa-check-circle fa-2x text-primary mb-2"></i>
+                        <h6>Get Verified</h6>
+                        <small class="text-muted">We'll verify and feature authentic reviews</small>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <i class="fas fa-chart-line fa-2x text-primary mb-2"></i>
+                        <h6>Help Others</h6>
+                        <small class="text-muted">Your experience helps others make informed decisions</small>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <i class="fas fa-gift fa-2x text-primary mb-2"></i>
+                        <h6>Special Offers</h6>
+                        <small class="text-muted">Get exclusive discounts on future services</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .step {
+        text-align: center;
+        flex: 1;
+    }
+    
+    .step-number {
+        width: 40px;
+        height: 40px;
+        background: #e9ecef;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+    
+    .step.active .step-number {
+        background: #0d6efd;
+        color: white;
+    }
+    
+    .step-line {
+        height: 2px;
+        background: #e9ecef;
+        margin: 0 10px;
+    }
+    
+    .rating-input ul {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+    
+    .rating-input li {
+        display: inline-block;
+    }
+    
+    .rating-input label {
+        font-size: 1.5rem;
+        cursor: pointer;
+        padding: 5px 10px;
+    }
+    
+    .rating-input input {
+        margin-right: 5px;
+    }
+    
+    /* Form styling */
+    .form-control:focus, .form-select:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 0.2rem rgba(13,110,253,0.25);
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,7 @@
+# templates/robots.txt
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+
+Sitemap: {{ SITE_URL }}/sitemap.xml

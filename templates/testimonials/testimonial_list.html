@@ -1,0 +1,484 @@
+<!-- templates/testimonials/testimonial_list.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Client Testimonials - Anwaar Galaxy Glow{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Header Section -->
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold mb-3">Client Testimonials</h1>
+        <p class="lead text-muted">See what our clients say about our services</p>
+        
+        <!-- Rating Summary Stats -->
+        {% if total_count > 0 %}
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-8">
+                <div class="card bg-light border-0">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-md-4 text-center mb-3 mb-md-0">
+                                <div class="display-1 fw-bold text-primary">{{ average_rating|floatformat:1 }}</div>
+                                <div class="rating-stars mb-1">
+                                    {% with full_stars=average_rating|floatformat:0|add:"0" %}
+                                        {% for i in "12345" %}
+                                            {% if forloop.counter <= full_stars %}
+                                                <i class="fas fa-star text-warning"></i>
+                                            {% else %}
+                                                <i class="far fa-star text-warning"></i>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endwith %}
+                                </div>
+                                <div class="text-muted small">Based on {{ total_count }} reviews</div>
+                            </div>
+                            <div class="col-md-8">
+                                {% for rating in rating_breakdown %}
+                                <div class="mb-2">
+                                    <div class="d-flex justify-content-between small mb-1">
+                                        <span>{{ rating.stars }} Stars</span>
+                                        <span>{{ rating.count }} reviews</span>
+                                    </div>
+                                    <div class="progress" style="height: 8px;">
+                                        <div class="progress-bar bg-warning" role="progressbar" 
+                                             style="width: {{ rating.percentage }}%"></div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    
+    <!-- Filter Bar -->
+    <div class="row mb-5">
+        <div class="col-md-8 mx-auto">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="row g-3 align-items-center">
+                        <div class="col-md-4">
+                            <label class="form-label mb-0 small fw-bold">Filter by Rating</label>
+                            <select class="form-select form-select-sm" id="ratingFilter">
+                                <option value="">All Ratings</option>
+                                <option value="5">★★★★★ (5 Stars)</option>
+                                <option value="4">★★★★☆ (4 Stars+)</option>
+                                <option value="3">★★★☆☆ (3 Stars+)</option>
+                                <option value="2">★★☆☆☆ (2 Stars+)</option>
+                                <option value="1">★☆☆☆☆ (1 Star+)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label mb-0 small fw-bold">Search</label>
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control" id="searchInput" placeholder="Search by name or keyword...">
+                                <button class="btn btn-primary" type="button" id="searchBtn">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label mb-0 small fw-bold">&nbsp;</label>
+                            <a href="{% url 'testimonials:submit' %}" class="btn btn-success btn-sm w-100">
+                                <i class="fas fa-plus me-1"></i> Add Review
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Featured Testimonials Section -->
+    {% if featured_testimonials %}
+    <div class="mb-5">
+        <div class="text-center mb-4">
+            <h2 class="section-title">
+                <i class="fas fa-star text-warning me-2"></i>
+                Featured Reviews
+                <i class="fas fa-star text-warning ms-2"></i>
+            </h2>
+            <p class="text-muted">Our most appreciated client experiences</p>
+        </div>
+        <div class="row" id="featuredContainer">
+            {% for testimonial in featured_testimonials %}
+            <div class="col-lg-6 mb-4">
+                <div class="card testimonial-card h-100 border-0 shadow-lg">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+                            <div class="rating-stars">
+                                {% for i in "12345" %}
+                                    {% if forloop.counter <= testimonial.rating %}
+                                        <i class="fas fa-star text-warning"></i>
+                                    {% else %}
+                                        <i class="far fa-star text-warning"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            {% if testimonial.is_verified %}
+                            <span class="badge bg-success">
+                                <i class="fas fa-check-circle me-1"></i> Verified Client
+                            </span>
+                            {% endif %}
+                        </div>
+                        
+                        <blockquote class="mb-4">
+                            <i class="fas fa-quote-left fa-2x text-primary opacity-25 mb-3 d-block"></i>
+                            <p class="fs-5 fst-italic">"{{ testimonial.testimonial|truncatechars:200 }}"</p>
+                        </blockquote>
+                        
+                        <div class="d-flex align-items-center">
+                            {% if testimonial.client_image %}
+                            <img src="{{ testimonial.client_image.url }}" alt="{{ testimonial.client_name }}" 
+                                 class="rounded-circle me-3" width="60" height="60" style="object-fit: cover;">
+                            {% else %}
+                            <div class="rounded-circle bg-gradient-primary d-flex align-items-center justify-content-center me-3" 
+                                 style="width: 60px; height: 60px;">
+                                <span class="text-white fw-bold fs-4">{{ testimonial.client_name|first|upper }}</span>
+                            </div>
+                            {% endif %}
+                            <div class="flex-grow-1">
+                                <h5 class="mb-0">{{ testimonial.client_name }}</h5>
+                                {% if testimonial.client_role or testimonial.company %}
+                                <p class="text-muted mb-0 small">
+                                    {% if testimonial.client_role %}{{ testimonial.client_role }}{% endif %}
+                                    {% if testimonial.company %}{% if testimonial.client_role %}, {% endif %}{{ testimonial.company }}{% endif %}
+                                </p>
+                                {% endif %}
+                                {% if testimonial.location %}
+                                <small class="text-muted">
+                                    <i class="fas fa-map-marker-alt me-1"></i> {{ testimonial.location }}
+                                </small>
+                                {% endif %}
+                            </div>
+                            {% if testimonial.project %}
+                            <div class="project-badge">
+                                <small class="text-primary">
+                                    <i class="fas fa-briefcase me-1"></i> {{ testimonial.project|truncatechars:20 }}
+                                </small>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- All Testimonials Section -->
+    <div>
+        <div class="text-center mb-4">
+            <h2 class="section-title">Client Reviews</h2>
+            <p class="text-muted">Real feedback from real clients</p>
+        </div>
+        
+        {% if testimonials %}
+            <div class="row" id="testimonialsContainer">
+                {% for testimonial in testimonials %}
+                <div class="col-lg-4 col-md-6 mb-4 testimonial-item" data-rating="{{ testimonial.rating }}" data-name="{{ testimonial.client_name|lower }}" data-text="{{ testimonial.testimonial|lower }}">
+                    <div class="card h-100 border-0 shadow-sm hover-effect">
+                        <div class="card-body p-4">
+                            <div class="rating-stars mb-3">
+                                {% for i in "12345" %}
+                                    {% if forloop.counter <= testimonial.rating %}
+                                        <i class="fas fa-star text-warning"></i>
+                                    {% else %}
+                                        <i class="far fa-star text-warning"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            
+                            <p class="card-text mb-4 testimonial-text">"{{ testimonial.testimonial|truncatechars:120 }}"</p>
+                            
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    {% if testimonial.client_image %}
+                                    <img src="{{ testimonial.client_image.url }}" alt="{{ testimonial.client_name }}" 
+                                         class="rounded-circle" width="50" height="50" style="object-fit: cover;">
+                                    {% else %}
+                                    <div class="rounded-circle bg-gradient-primary d-flex align-items-center justify-content-center" 
+                                         style="width: 50px; height: 50px;">
+                                        <span class="text-white fw-bold">{{ testimonial.client_name|first|upper }}</span>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h6 class="mb-0">{{ testimonial.client_name }}
+                                        {% if testimonial.is_verified %}
+                                        <i class="fas fa-check-circle text-success ms-1" title="Verified Client"></i>
+                                        {% endif %}
+                                    </h6>
+                                    {% if testimonial.client_role %}
+                                    <small class="text-muted">{{ testimonial.client_role }}</small>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent border-top-0 py-3">
+                            <small class="text-muted">
+                                <i class="far fa-calendar me-1"></i> {{ testimonial.created_at|date:"F d, Y" }}
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <!-- Pagination -->
+            {% if is_paginated %}
+            <nav aria-label="Testimonials pagination" class="mt-5">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo; Previous</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                        <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                        <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                            <span aria-hidden="true">Next &raquo;</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+        {% else %}
+            <div class="text-center py-5">
+                <div class="empty-state">
+                    <i class="fas fa-comments fa-4x text-muted mb-4"></i>
+                    <h3>No reviews yet</h3>
+                    <p class="text-muted mb-4">Be the first to share your experience with our services!</p>
+                    <a href="{% url 'testimonials:submit' %}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-edit me-2"></i> Write a Review
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    
+    <!-- Call to Action Section -->
+    <div class="text-center mt-5 pt-5">
+        <div class="card bg-gradient-primary text-white border-0">
+            <div class="card-body p-5">
+                <h2 class="card-title mb-3">Share Your Experience</h2>
+                <p class="card-text mb-4 opacity-75">Have you worked with us? We'd love to hear about your experience!</p>
+                <a href="{% url 'testimonials:submit' %}" class="btn btn-light btn-lg px-5">
+                    <i class="fas fa-pen me-2"></i> Write Your Testimonial
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary-color: #0d6efd;
+    }
+    
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .testimonial-card {
+        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+        border-left: 5px solid var(--primary-color) !important;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .testimonial-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1) !important;
+    }
+    
+    .hover-effect {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .hover-effect:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
+    }
+    
+    .rating-stars {
+        font-size: 1.2rem;
+        letter-spacing: 2px;
+    }
+    
+    blockquote {
+        position: relative;
+        margin-bottom: 1.5rem;
+    }
+    
+    blockquote i.fa-quote-left {
+        position: absolute;
+        top: -15px;
+        left: -10px;
+        opacity: 0.15;
+        font-size: 2rem;
+    }
+    
+    .section-title {
+        position: relative;
+        display: inline-block;
+        margin-bottom: 1rem;
+        font-size: 2rem;
+        font-weight: 600;
+    }
+    
+    .section-title:after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(90deg, #667eea, #764ba2);
+        border-radius: 2px;
+    }
+    
+    .empty-state {
+        padding: 3rem;
+        background: #f8f9fa;
+        border-radius: 15px;
+    }
+    
+    .project-badge {
+        position: absolute;
+        bottom: 15px;
+        right: 20px;
+    }
+    
+    .card-footer {
+        background: transparent;
+        border-top: 1px solid rgba(0,0,0,0.05);
+    }
+    
+    .progress {
+        background-color: #e9ecef;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    
+    .progress-bar {
+        background: linear-gradient(90deg, #ffc107, #ff9800);
+        transition: width 0.6s ease;
+    }
+    
+    .form-select, .form-control {
+        transition: all 0.3s ease;
+    }
+    
+    .form-select:focus, .form-control:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    }
+    
+    @media (max-width: 768px) {
+        .display-1 {
+            font-size: 3rem;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+        }
+        
+        .testimonial-card .fs-5 {
+            font-size: 1rem !important;
+        }
+    }
+    
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .testimonial-item {
+        animation: fadeIn 0.5s ease-out;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Rating filter functionality
+    document.getElementById('ratingFilter')?.addEventListener('change', function() {
+        const rating = this.value;
+        const url = new URL(window.location.href);
+        if (rating) {
+            url.searchParams.set('rating', rating);
+        } else {
+            url.searchParams.delete('rating');
+        }
+        window.location.href = url.toString();
+    });
+    
+    // Search functionality
+    document.getElementById('searchBtn')?.addEventListener('click', function() {
+        const searchTerm = document.getElementById('searchInput').value;
+        const url = new URL(window.location.href);
+        if (searchTerm) {
+            url.searchParams.set('q', searchTerm);
+        } else {
+            url.searchParams.delete('q');
+        }
+        window.location.href = url.toString();
+    });
+    
+    // Search on Enter key
+    document.getElementById('searchInput')?.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            document.getElementById('searchBtn').click();
+        }
+    });
+    
+    // Set current filter values from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const currentRating = urlParams.get('rating');
+    const currentSearch = urlParams.get('q');
+    
+    if (currentRating) {
+        const ratingSelect = document.getElementById('ratingFilter');
+        if (ratingSelect) ratingSelect.value = currentRating;
+    }
+    
+    if (currentSearch) {
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) searchInput.value = currentSearch;
+    }
+    
+    // Add smooth fade-in effect to testimonials
+    document.addEventListener('DOMContentLoaded', function() {
+        const items = document.querySelectorAll('.testimonial-item');
+        items.forEach((item, index) => {
+            item.style.animationDelay = `${index * 0.1}s`;
+        });
+    });
+</script>
+{% endblock %}

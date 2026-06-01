@@ -1,0 +1,648 @@
+<!-- templates/contact/contact.html -->
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Contact Us - Anwaar Galaxy Glow{% endblock %}
+
+{% block extra_css %}
+{{ block.super }}
+<style>
+    /* Contact Page Styles */
+    .contact-hero {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 20px;
+        padding: 3rem 2rem;
+        margin-bottom: 3rem;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .contact-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        opacity: 0.1;
+        animation: floatBg 20s linear infinite;
+    }
+    
+    @keyframes floatBg {
+        0% { transform: translate(0, 0); }
+        100% { transform: translate(50px, 50px); }
+    }
+    
+    .contact-hero-content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        color: white;
+    }
+    
+    .contact-hero-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        display: inline-block;
+        animation: bounce 2s infinite;
+    }
+    
+    @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+    
+    .contact-hero-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    }
+    
+    .contact-hero-subtitle {
+        font-size: 1.1rem;
+        opacity: 0.95;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    /* Form Card */
+    .form-card {
+        border: none;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        transition: transform 0.3s ease;
+    }
+    
+    .form-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+    }
+    
+    .form-card-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 1.5rem;
+        color: white;
+    }
+    
+    .form-card-header h3 {
+        margin: 0;
+        font-size: 1.5rem;
+    }
+    
+    .form-card-body {
+        padding: 2rem;
+    }
+    
+    /* Info Cards */
+    .info-card {
+        border: none;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+    
+    .info-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+    
+    .info-card-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 1.2rem;
+        color: white;
+        text-align: center;
+    }
+    
+    .info-card-header i {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .info-card-header h4 {
+        margin: 0;
+        font-size: 1.2rem;
+    }
+    
+    .info-card-body {
+        padding: 1.5rem;
+    }
+    
+    .contact-detail-item {
+        display: flex;
+        align-items: center;
+        padding: 1rem;
+        border-bottom: 1px solid #e9ecef;
+        transition: all 0.3s ease;
+    }
+    
+    .contact-detail-item:hover {
+        background: #f8f9fa;
+        transform: translateX(5px);
+    }
+    
+    .contact-icon {
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1rem;
+        flex-shrink: 0;
+    }
+    
+    .contact-icon i {
+        font-size: 1.5rem;
+        color: white;
+    }
+    
+    .contact-info {
+        flex: 1;
+    }
+    
+    .contact-info h6 {
+        margin: 0;
+        font-size: 0.85rem;
+        color: #6c757d;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    
+    .contact-info p {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 500;
+        color: #2a2d43;
+    }
+    
+    .social-links-circle a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+        margin: 0 5px;
+    }
+    
+    .social-links-circle a:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+    
+    .service-quick-link {
+        display: flex;
+        align-items: center;
+        padding: 0.8rem;
+        background: #f8f9fa;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        color: #2a2d43;
+        margin-bottom: 0.5rem;
+    }
+    
+    .service-quick-link:hover {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        transform: translateX(5px);
+    }
+    
+    .service-quick-link i {
+        margin-right: 0.5rem;
+    }
+    
+    /* Form Styling */
+    .form-control, .form-select {
+        border-radius: 10px;
+        border: 2px solid #e9ecef;
+        padding: 0.75rem 1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .form-control:focus, .form-select:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    }
+    
+    .form-label {
+        font-weight: 600;
+        color: #2a2d43;
+        margin-bottom: 0.5rem;
+    }
+    
+    .btn-submit {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        padding: 1rem;
+        border-radius: 10px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+    }
+    
+    /* Auto-fill highlight */
+    .auto-filled {
+        border-color: #28a745 !important;
+        border-width: 2px !important;
+        background-color: #f0fff4 !important;
+    }
+    
+    .auto-fill-badge {
+        font-size: 0.75rem;
+        color: #28a745;
+        margin-top: 0.25rem;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .contact-hero-title {
+            font-size: 1.8rem;
+        }
+        
+        .contact-hero-icon {
+            font-size: 3rem;
+        }
+        
+        .form-card-body {
+            padding: 1.5rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item active">Contact Us</li>
+        </ol>
+    </nav>
+    
+    <!-- Hero Section -->
+    <div class="contact-hero">
+        <div class="contact-hero-content">
+            <i class="fas fa-envelope-open-text contact-hero-icon"></i>
+            <h1 class="contact-hero-title">Get In Touch</h1>
+            <p class="contact-hero-subtitle">
+                Have a project in mind? We're here to help! Fill out the form below and we'll get back to you within 24 hours.
+            </p>
+        </div>
+    </div>
+    
+    <!-- Messages -->
+    {% if messages %}
+    <div class="mb-4">
+        {% for message in messages %}
+        <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show shadow-sm" role="alert">
+            <i class="fas fa-{% if message.tags == 'success' %}check-circle{% elif message.tags == 'error' %}exclamation-circle{% else %}info-circle{% endif %} me-2"></i>
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <!-- Order Auto-fill Notification (Only shows when coming from Order Now button) -->
+    {% if is_auto_filled %}
+    <div class="alert alert-success alert-dismissible fade show mb-4 shadow-sm" role="alert">
+        <div class="d-flex align-items-center">
+            <i class="fas fa-shopping-cart fa-2x me-3"></i>
+            <div>
+                <strong><i class="fas fa-check-circle me-1"></i> Order Form Auto-Filled!</strong><br>
+                <span>The service details for <strong>"{{ service_name|title }}"</strong> have been automatically filled. Please review and submit your order request.</span>
+            </div>
+            <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
+        </div>
+    </div>
+    {% endif %}
+    
+    <div class="row g-4">
+        <!-- Contact Form Section -->
+        <div class="col-lg-7">
+            <div class="form-card">
+                <div class="form-card-header">
+                    <h3><i class="fas fa-paper-plane me-2"></i> Send Us a Message</h3>
+                </div>
+                <div class="form-card-body">
+                    <form method="post" id="contactForm">
+                        {% csrf_token %}
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {{ form.name|as_crispy_field }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{ form.email|as_crispy_field }}
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {{ form.phone|as_crispy_field }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{ form.service|as_crispy_field }}
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form.subject|as_crispy_field }}
+                        </div>
+                        
+                        <div class="mb-4">
+                            {{ form.message|as_crispy_field }}
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-submit btn-lg">
+                                <i class="fas fa-paper-plane me-2"></i> Send Message
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Contact Information Section -->
+        <div class="col-lg-5">
+            <!-- Quick Contact Card -->
+            <div class="info-card mb-4">
+                <div class="info-card-header">
+                    <i class="fas fa-address-card"></i>
+                    <h4>Quick Contact</h4>
+                </div>
+                <div class="info-card-body p-0">
+                    <div class="contact-detail-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <div class="contact-info">
+                            <h6>Phone Number</h6>
+                            <p>+92 301 2476595</p>
+                            <small class="text-muted">Mon-Fri, 9:00 AM - 6:00 PM</small>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-detail-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-info">
+                            <h6>Email Address</h6>
+                            <p>anwaargalaxyglow@gmail.com</p>
+                            <small class="text-muted">24/7 Support</small>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-detail-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-info">
+                            <h6>Our Location</h6>
+                            <p>Pakistan</p>
+                            <small class="text-muted">Remote Support Worldwide</small>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-detail-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="contact-info">
+                            <h6>Business Hours</h6>
+                            <p>Monday - Friday: 9:00 AM - 6:00 PM</p>
+                            <p class="mb-0">Saturday: 10:00 AM - 2:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Social Media Card -->
+            <div class="info-card mb-4">
+                <div class="info-card-header">
+                    <i class="fas fa-share-alt"></i>
+                    <h4>Connect With Us</h4>
+                </div>
+                <div class="info-card-body text-center">
+                    <div class="social-links-circle">
+                        <a href="https://web.facebook.com/profile.php?id=61587315391232" target="_blank" rel="noopener noreferrer">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://x.com/agclicks4u" target="_blank" rel="noopener noreferrer">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="https://www.instagram.com/anwaar_galaxy_glow/" target="_blank" rel="noopener noreferrer">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/muhammad-anwaar-a11312411/" target="_blank" rel="noopener noreferrer">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="https://github.com/Anwaar0012" target="_blank" rel="noopener noreferrer">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://www.youtube.com/@AnwaarGalaxy" target="_blank" rel="noopener noreferrer">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                    <hr class="my-3">
+                    <p class="text-muted small mb-0">Follow us for updates, tips, and latest projects</p>
+                </div>
+            </div>
+            
+            <!-- Services Quick Links -->
+            <div class="info-card">
+                <div class="info-card-header">
+                    <i class="fas fa-cogs"></i>
+                    <h4>Our Services</h4>
+                </div>
+                <div class="info-card-body">
+                    <a href="{% url 'services:service_list' %}?category=autocad" class="service-quick-link">
+                        <i class="fas fa-cube"></i> AutoCAD Design
+                    </a>
+                    <a href="{% url 'services:service_list' %}?category=illustrator" class="service-quick-link">
+                        <i class="fas fa-pen-fancy"></i> Illustrator Design
+                    </a>
+                    <a href="{% url 'services:service_list' %}?category=blender" class="service-quick-link">
+                        <i class="fas fa-cube"></i> 3D Modeling (Blender)
+                    </a>
+                    <a href="{% url 'services:service_list' %}?category=photoshop" class="service-quick-link">
+                        <i class="fas fa-camera"></i> Photoshop Editing
+                    </a>
+                    <a href="{% url 'services:service_list' %}?category=python" class="service-quick-link">
+                        <i class="fab fa-python"></i> Python Development
+                    </a>
+                    <a href="{% url 'services:service_list' %}?category=django" class="service-quick-link">
+                        <i class="fab fa-django"></i> Django Web Development
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- FAQ Section -->
+    <div class="mt-5 pt-4">
+        <h2 class="text-center mb-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+            <i class="fas fa-question-circle me-2"></i>Frequently Asked Questions
+        </h2>
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="accordion shadow-sm rounded" id="faqAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                What services do you offer?
+                            </button>
+                        </h2>
+                        <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                We offer a comprehensive range of services including:
+                                <ul class="mt-2">
+                                    <li><strong>Design Services:</strong> AutoCAD, Adobe Illustrator, Photoshop, Blender 3D</li>
+                                    <li><strong>Development Services:</strong> Python, Django, Flet, PySide</li>
+                                    <li><strong>Office Solutions:</strong> MS Office Projects (Excel, Word, PowerPoint)</li>
+                                    <li><strong>Custom Solutions:</strong> Tailored to your specific requirements</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                How long does a typical project take?
+                            </button>
+                        </h2>
+                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Project duration varies based on complexity:
+                                <ul class="mt-2">
+                                    <li><strong>Simple Projects:</strong> 3-5 business days</li>
+                                    <li><strong>Standard Projects:</strong> 1-2 weeks</li>
+                                    <li><strong>Complex Projects:</strong> 2-4 weeks</li>
+                                </ul>
+                                We'll provide a detailed timeline during our initial consultation.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                What are your payment terms?
+                            </button>
+                        </h2>
+                        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                We offer flexible payment options:
+                                <ul class="mt-2">
+                                    <li><strong>Standard:</strong> 50% deposit, 50% upon completion</li>
+                                    <li><strong>Large Projects:</strong> Milestone-based payments</li>
+                                    <li><strong>Payment Methods:</strong> Sadapay, Bank Transfer, PayPal, Credit Card</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                                Do you offer revisions?
+                            </button>
+                        </h2>
+                        <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Yes! Customer satisfaction is our priority:
+                                <ul class="mt-2">
+                                    <li><strong>Up to 3 rounds of revisions</strong> for most projects</li>
+                                    <li><strong>Additional revisions available</strong> at nominal cost</li>
+                                    <li><strong>100% satisfaction guaranteed</strong> or your money back</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Call to Action Section -->
+    <div class="text-center mt-5 p-5 bg-light rounded" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+        <i class="fas fa-rocket text-primary fa-3x mb-3"></i>
+        <h3>Ready to Start Your Project?</h3>
+        <p class="lead text-muted mb-4">Let's bring your ideas to life with our professional design and development services.</p>
+        <a href="{% url 'services:service_list' %}" class="btn btn-primary btn-lg">
+            <i class="fas fa-cogs me-2"></i> Explore Services
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Get URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const serviceParam = urlParams.get('service');
+    const actionParam = urlParams.get('action');
+    
+    // ONLY highlight and show tooltips if this is an order (coming from Order Now button)
+    if (serviceParam && actionParam === 'order') {
+        // Highlight auto-filled fields
+        const serviceSelect = document.getElementById('id_service');
+        if (serviceSelect && serviceSelect.value) {
+            serviceSelect.classList.add('auto-filled');
+            
+            // Add tooltip below service field
+            const serviceField = serviceSelect.closest('.mb-3');
+            if (serviceField && !serviceField.querySelector('.auto-fill-badge')) {
+                const badge = document.createElement('div');
+                badge.className = 'auto-fill-badge';
+                badge.innerHTML = '<i class="fas fa-magic me-1"></i> Auto-filled from your service selection';
+                serviceField.appendChild(badge);
+            }
+        }
+        
+        // Highlight subject field if it contains ORDER
+        const subjectField = document.getElementById('id_subject');
+        if (subjectField && subjectField.value && subjectField.value.includes('ORDER')) {
+            subjectField.classList.add('auto-filled');
+        }
+        
+        // Highlight message field if it contains order text
+        const messageField = document.getElementById('id_message');
+        if (messageField && messageField.value && messageField.value.includes('interested in ordering')) {
+            messageField.classList.add('auto-filled');
+        }
+    }
+    
+    // Form submission indicator (works for all visits)
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            const submitBtn = this.querySelector('button[type="submit"]');
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

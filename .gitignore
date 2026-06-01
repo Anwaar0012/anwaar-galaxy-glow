@@ -1,0 +1,51 @@
+# Environment variables (CRITICAL - keeps secrets safe!)
+.env
+.env.local
+.env.production
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+
+# Database
+*.sqlite3
+db.sqlite3
+
+# Media and static files (these are generated, not source code)
+media/
+staticfiles/
+*.log
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Django
+*.log
+*.pot
+*.pyc
+local_settings.py
+
+# Cache files
+blog_cache/
+*.cache
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Hostinger specific
+.hostinger/
+
+.htaccess
+# Apache files
+.htaccess
